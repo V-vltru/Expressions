@@ -1,4 +1,7 @@
-﻿namespace Expressions.Models
+﻿/// <summary>
+/// Namespace contains all models which are operated by <see cref="Expressions.Expression" /> class.
+/// </summary>
+namespace Expressions.Models
 {
     using System;
     using System.Collections.Generic;
@@ -10,8 +13,44 @@
     /// </summary>
     public class Variable
     {
-        private string _name;
-        private double _value;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Variable" /> class.
+        /// </summary>
+        /// <param name="name">Name of the variable</param>
+        /// <param name="value">Value of the variable</param>
+        public Variable(string name, double value)
+        {
+            this.Name = name;
+            this.Value = value;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Variable" /> class.
+        /// </summary>
+        /// <param name="variable">The instance of <see cref="Variable" /> class which is supposed to be copied to the current one</param>
+        public Variable(Variable variable)
+        {
+            this.Name = variable.Name;
+            this.Value = variable.Value;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Variable" /> class.
+        /// Default constructor
+        /// </summary>
+        public Variable()
+        {
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the variable
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of the variable
+        /// </summary>
+        public double Value { get; set; }
 
         /// <summary>
         /// Method defines what the parameter belongs to: Variable, Number or Nothing
@@ -45,12 +84,12 @@
         /// <param name="varName">Name of variable</param>
         /// <param name="variables">List of variables to get from</param>
         /// <returns>The value of the variable in double format</returns>
-        public static double GetVariableValue (string varName, List<Variable> variables)
+        public static double GetVariableValue(string varName, List<Variable> variables)
         {
             double result;
             int count = (from g in variables
-                            where g.Name == varName
-                            select g.Value).Count();
+                         where g.Name == varName
+                         select g.Value).Count();
 
             if (count == 0)
             {
@@ -68,47 +107,6 @@
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// The cunstructor which specifies the parameters of class
-        /// </summary>
-        /// <param name="name">Name of the variable</param>
-        /// <param name="value">Value of the variable</param>
-        public Variable(string name, double value)
-        {
-            this.Name = name;
-            this.Value = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the variable
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the value of the variable
-        /// </summary>
-        public double Value
-        {
-            get
-            {
-                return _value;
-            }
-            set
-            {
-                this._value = value;
-            }
         }
     }
 }
