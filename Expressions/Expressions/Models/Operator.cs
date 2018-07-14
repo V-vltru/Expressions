@@ -1,4 +1,7 @@
-﻿namespace Expressions.Models
+﻿/// <summary>
+/// Namespace contains all models which are operated by <see cref="Expressions.Expression" /> class.
+/// </summary>
+namespace Expressions.Models
 {
     using System;
     using System.Collections.Generic;
@@ -24,30 +27,13 @@
         /// </summary>
         private static string errorMessage;
 
-        private int _idx;
-        private char _operatorName;
-
         /// <summary>
-        /// Method returns the value of the binary operator
+        /// Private member which saves the content of <see cref="Operator.OperatorName" /> property.
         /// </summary>
-        /// <param name="leftOp">Left operand</param>
-        /// <param name="rightOp">Right operand</param>
-        /// <param name="OperatorName">Name of the operator</param>
-        /// <returns>The result of operator</returns>
-        public static double GetValue(double leftOp, double rightOp, char OperatorName)
-        {
-            switch (OperatorName)
-            {
-                case '+': return leftOp + rightOp;
-                case '-': return leftOp - rightOp;
-                case '/': return leftOp / rightOp;
-                case '*': return leftOp * rightOp;
-                case '^': return Math.Pow(leftOp, rightOp);
-                default: throw new Exception(errorMessage.Replace("%p%", OperatorName.ToString()));
-            }
-        }
+        private char operatorName;
 
         /// <summary>
+        /// Initializes static members of the <see cref="Operator" /> class.
         /// Operator generates the error message in case of addition of not accessable parameter.
         /// It shows the list of allowable parameters to help 
         /// </summary>
@@ -65,7 +51,7 @@
         }
 
         /// <summary>
-        /// The constructor sets the parameters of the class
+        /// Initializes a new instance of the <see cref="Operator" /> class.
         /// </summary>
         /// <param name="idx">The position of the operator</param>
         /// <param name="operatorName">The name of the operator</param>
@@ -76,19 +62,27 @@
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Operator" /> class.
+        /// </summary>
+        /// <param name="op">Instance of Operator class which is supposed to be copied to the current one</param>
+        public Operator(Operator op)
+        {
+            this.Idx = op.Idx;
+            this.OperatorName = op.OperatorName;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Operator" /> class.
+        /// Default constructor
+        /// </summary>
+        public Operator()
+        {
+        }
+
+        /// <summary>
         /// Gets or sets the position of the operator
         /// </summary>
-        public int Idx
-        {
-            get
-            {
-                return _idx;
-            }
-            set
-            {
-                _idx = value;
-            }
-        }
+        public int Idx { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the operator
@@ -97,18 +91,39 @@
         {
             get
             {
-                return _operatorName;
+                return this.operatorName;
             }
+
             set
             {
                 if (wellKnownOperators.Contains(value))
                 {
-                    _operatorName = value;
+                    this.operatorName = value;
                 }
                 else
                 {
                     throw new Exception(errorMessage.Replace("%p%", value.ToString()));
                 }
+            }
+        }
+
+        /// <summary>
+        /// Method returns the value of the binary operator
+        /// </summary>
+        /// <param name="leftOp">Left operand</param>
+        /// <param name="rightOp">Right operand</param>
+        /// <param name="operatorName">Name of the operator</param>
+        /// <returns>The result of operator</returns>
+        public static double GetValue(double leftOp, double rightOp, char operatorName)
+        {
+            switch (operatorName)
+            {
+                case '+': return leftOp + rightOp;
+                case '-': return leftOp - rightOp;
+                case '/': return leftOp / rightOp;
+                case '*': return leftOp * rightOp;
+                case '^': return Math.Pow(leftOp, rightOp);
+                default: throw new Exception(errorMessage.Replace("%p%", operatorName.ToString()));
             }
         }
     }
