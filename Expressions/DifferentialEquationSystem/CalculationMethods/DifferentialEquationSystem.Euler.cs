@@ -10,6 +10,11 @@
 
     public partial class DifferentialEquationSystem
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="variablesAtAllStep"></param>
+        /// <returns></returns>
         public List<Variable> EulerCalculation(List<List<Variable>> variablesAtAllStep = null)
         {
             List<Variable> allVars;
@@ -52,12 +57,8 @@
                 if (variablesAtAllStep != null)
                 {
                     List<Variable> varsAtIteration = new List<Variable>();
-                    foreach(Variable variable in nextLeftVariables)
-                    {
-                        varsAtIteration.Add(new Variable(variable.Name, variable.Value));
-                    }
-
-                    varsAtIteration.Add(new Variable(currentTime.Name, currentTime.Value));
+                    DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, varsAtIteration);
+                    varsAtIteration.Add(new Variable(currentTime));
                 }
 
                 // Next variables are becoming the current ones for the next iteration
