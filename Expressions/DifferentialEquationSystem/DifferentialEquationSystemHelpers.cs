@@ -12,12 +12,28 @@ namespace DifferentialEquationSystem
         /// </summary>
         /// <param name="initVariables"></param>
         /// <returns></returns>
-        public static List<Variable> GetVariablesFromInitVariables(List<InitVariable> initVariables)
+        public static List<Variable> ConvertVariablesToInitVariables(List<InitVariable> initVariables)
         {
             List<Variable> result = new List<Variable>();
             foreach (InitVariable initVariable in initVariables)
             {
                 result.Add(initVariable);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Method converts List<Variable> items to List<InitVariable> items
+        /// </summary>
+        /// <param name="variables"></param>
+        /// <returns></returns>
+        public static List<InitVariable> ConvertInitVariableToVariable(List<Variable> variables)
+        {
+            List<InitVariable> result = new List<InitVariable>();
+            foreach (Variable variable in variables)
+            {
+                result.Add(variable);
             }
 
             return result;
@@ -74,6 +90,8 @@ namespace DifferentialEquationSystem
             }
         }
 
+        #region Methods for List<InitVariables> / List<Variables> copying
+
         /// <summary>
         /// Method copies Variables from source containier to the destination one
         /// </summary>
@@ -84,8 +102,37 @@ namespace DifferentialEquationSystem
             destVariables.Clear();
             foreach(Variable oneFromSource in sourceVariables)
             {
-                destVariables.Add(new Variable(oneFromSource.Name, oneFromSource.Value));
+                destVariables.Add(new Variable(oneFromSource));
             }
         }
+
+        public static void CopyVariables(List<InitVariable> sourceVariables, List<Variable> destVariables)
+        {
+            destVariables.Clear();
+            foreach (InitVariable oneFromSource in sourceVariables)
+            {
+                destVariables.Add(new Variable(oneFromSource));
+            }
+        }
+
+        public static void CopyVariables(List<Variable> sourceVariables, List<InitVariable> destVariables)
+        {
+            destVariables.Clear();
+            foreach (Variable oneFromSource in sourceVariables)
+            {
+                destVariables.Add(new InitVariable(oneFromSource));
+            }
+        }
+
+        public static void CopyVariables(List<InitVariable> sourceVariables, List<InitVariable> destVariables)
+        {
+            destVariables.Clear();
+            foreach (InitVariable oneFromSource in sourceVariables)
+            {
+                destVariables.Add(new InitVariable(oneFromSource));
+            }
+        }
+
+        #endregion
     }
 }

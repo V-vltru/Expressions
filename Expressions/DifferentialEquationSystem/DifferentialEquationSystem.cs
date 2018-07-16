@@ -31,12 +31,12 @@
             // Setting up of variables and constants
             if (leftVariables != null)
             {
-                this.LeftVariables = DifferentialEquationSystemHelpers.GetVariablesFromInitVariables(leftVariables);
+                this.LeftVariables = DifferentialEquationSystemHelpers.ConvertVariablesToInitVariables(leftVariables);
             }
 
             if (constants != null)
             {
-                this.Constants = DifferentialEquationSystemHelpers.GetVariablesFromInitVariables(constants);
+                this.Constants = DifferentialEquationSystemHelpers.ConvertVariablesToInitVariables(constants);
             }
 
             if (timeVariable != null)

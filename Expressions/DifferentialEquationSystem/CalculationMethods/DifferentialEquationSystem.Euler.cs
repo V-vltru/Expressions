@@ -15,8 +15,10 @@
         /// </summary>
         /// <param name="variablesAtAllStep"></param>
         /// <returns></returns>
-        public List<Variable> EulerCalculation(List<List<Variable>> variablesAtAllStep = null)
+        public List<InitVariable> EulerCalculation(List<List<InitVariable>> variablesAtAllStep = null)
         {
+            DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
+
             List<Variable> allVars;
             List<Variable> currentLeftVariables = new List<Variable>();
             List<Variable> nextLeftVariables = new List<Variable>();
@@ -24,12 +26,19 @@
             DifferentialEquationSystemHelpers.CopyVariables(this.LeftVariables, currentLeftVariables);
             DifferentialEquationSystemHelpers.CopyVariables(this.LeftVariables, nextLeftVariables);
 
-            Variable currentTime = new Variable(this.TimeVariable.Name, this.TimeVariable.Value);
+            Variable currentTime = new Variable(this.TimeVariable);
 
             if (variablesAtAllStep != null)
             {
                 variablesAtAllStep.Clear();
-                variablesAtAllStep.Add(currentLeftVariables);
+                List<InitVariable> initLeftVariables = new List<InitVariable>();
+                foreach (Variable leftVariable in this.LeftVariables)
+                {
+                    initLeftVariables.Add(leftVariable);
+                }
+
+                initLeftVariables.Add(currentTime);
+                variablesAtAllStep.Add(initLeftVariables);
             }
 
             do
@@ -56,7 +65,7 @@
                 // Saving of all variables at current iteration
                 if (variablesAtAllStep != null)
                 {
-                    List<Variable> varsAtIteration = new List<Variable>();
+                    List<InitVariable> varsAtIteration = new List<InitVariable>();
                     DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, varsAtIteration);
                     varsAtIteration.Add(new Variable(currentTime));
                 }
@@ -66,7 +75,13 @@
 
             } while (currentTime.Value < this.TEnd);
 
-            return currentLeftVariables;
+            List<InitVariable> result = new List<InitVariable>();
+            foreach(Variable var in currentLeftVariables)
+            {
+                result.Add(new InitVariable(var.Name, var.Value));
+            }
+
+            return result;
         }
     }
 }
