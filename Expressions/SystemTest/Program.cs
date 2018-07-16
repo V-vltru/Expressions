@@ -25,9 +25,10 @@ namespace SystemTest
 
             InitVariable timeVariable = new InitVariable("time", 0);
 
-            DifferentialEquationSystem.DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem.DifferentialEquationSystem(expressions, leftVariables, null, timeVariable, 0.5, 0.001);
-
-            List<InitVariable> result = differentialEquationSystem.EulerCalculation();
+            DifferentialEquationSystem.DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem.DifferentialEquationSystem(expressions, leftVariables, null, timeVariable, 1.5, 0.001);
+            List<List<InitVariable>> perTime = new List<List<InitVariable>>();
+            double calcTime = 0;
+            List<InitVariable> result = differentialEquationSystem.EulerCalculation(out calcTime, perTime, true);
         }
     }
 }
