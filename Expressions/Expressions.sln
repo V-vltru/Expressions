@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifferentialEquationSystem"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifferentialEquationSystemUnitTesting", "DifferentialEquationSystemUnitTesting\DifferentialEquationSystemUnitTesting.csproj", "{C4540A52-37CA-43E1-865B-844D88527A08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemTest", "SystemTest\SystemTest.csproj", "{BFF7FE33-9F47-4630-A85D-64AD0FD4C1AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C4540A52-37CA-43E1-865B-844D88527A08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4540A52-37CA-43E1-865B-844D88527A08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4540A52-37CA-43E1-865B-844D88527A08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFF7FE33-9F47-4630-A85D-64AD0FD4C1AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFF7FE33-9F47-4630-A85D-64AD0FD4C1AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFF7FE33-9F47-4630-A85D-64AD0FD4C1AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFF7FE33-9F47-4630-A85D-64AD0FD4C1AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
