@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculationMethods\DifferentialEquationSystem.Euler.cs" />
+    <Compile Include="CalculationMethods\DifferentialEquationSystem.ForecastCorrection.cs" />
     <Compile Include="DifferentialEquationSystem.cs" />
     <Compile Include="DifferentialEquationSystemHelpers.cs" />
     <Compile Include="InitVariable.cs" />
