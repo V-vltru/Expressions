@@ -11,6 +11,7 @@
         /// Method calculates a differential equation system with Euler method
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
+        /// <param name="async">Flag which specifies if calculation should be performed in parallel mode</param>
         /// <returns>List of result variables</returns>
         public List<InitVariable> EulerCalculation(List<List<InitVariable>> variablesAtAllStep = null, bool async = false)
         {
@@ -97,9 +98,6 @@
 
             do
             {
-                // calculation time incrimentation
-                currentTime.Value += this.Tau;
-
                 // Combinig of variables
                 allVars = new List<Variable>();
                 allVars.AddRange(currentLeftVariables);
@@ -113,7 +111,7 @@
                 // Calculation 
                 for (int i = 0; i < nextLeftVariables.Count; i++)
                 {
-                    nextLeftVariables[i].Value += this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
+                    nextLeftVariables[i].Value = currentLeftVariables[i].Value + this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
                 }
 
                 // Saving of all variables at current iteration
@@ -129,6 +127,8 @@
                 // Next variables are becoming the current ones for the next iteration
                 DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, currentLeftVariables);
 
+                // calculation time incrimentation
+                currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
             List<InitVariable> result = new List<InitVariable>();

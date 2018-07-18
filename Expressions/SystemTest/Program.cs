@@ -28,7 +28,11 @@ namespace SystemTest
             DifferentialEquationSystem.DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem.DifferentialEquationSystem(expressions, leftVariables, null, timeVariable, 1.5, 0.001);
             List<List<InitVariable>> perTime = new List<List<InitVariable>>();
             double calcTime = 0;
-            List<InitVariable> result = differentialEquationSystem.EulerCalculation(out calcTime, perTime, true);
+            List<InitVariable> resultEuler = differentialEquationSystem.EulerCalculation(out calcTime, perTime, true);
+
+            double calcTimeForecast = 0;
+            List<List<InitVariable>> perTimeForecast = new List<List<InitVariable>>();
+            List<InitVariable> resultForecastCorrection = differentialEquationSystem.ForecastCorrectionCalculation(out calcTimeForecast, perTimeForecast, true);
         }
     }
 }
