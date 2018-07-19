@@ -33,6 +33,10 @@ namespace SystemTest
             double calcTimeForecast = 0;
             List<List<InitVariable>> perTimeForecast = new List<List<InitVariable>>();
             List<InitVariable> resultForecastCorrection = differentialEquationSystem.ForecastCorrectionCalculation(out calcTimeForecast, perTimeForecast, true);
+
+            double calcTimeRK2 = 0;
+            List<List<InitVariable>> perTimeRK2 = new List<List<InitVariable>>();
+            List<InitVariable> resultRK2 = differentialEquationSystem.RK2Calculation(out calcTimeRK2, perTimeRK2, true);
         }
     }
 }
