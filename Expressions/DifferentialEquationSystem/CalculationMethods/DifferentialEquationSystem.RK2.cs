@@ -7,6 +7,12 @@
 
     public partial class DifferentialEquationSystem
     {
+        /// <summary>
+        /// Method calculates a differential equation system with RK2 method
+        /// </summary>
+        /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
+        /// <param name="async">Flag which specifies if calculation should be performed in parallel mode</param>
+        /// <returns>List of result variables</returns>
         public List<InitVariable> RK2Calculation(List<List<InitVariable>> variablesAtAllStep = null, bool async = false)
         {
             // Checking the correctness of input variables
@@ -22,7 +28,13 @@
             }
         }
 
-        
+        /// <summary>
+        /// Method calculates a differential equation system with RK2 method
+        /// </summary>
+        /// <param name="calculationTime">Referenced parameter where calculation time is supposed to be loacted</param>
+        /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
+        /// <param name="async">Flag which specifies if calculation should be performed in parallel mode</param>
+        /// <returns>List of result variables</returns>
         public List<InitVariable> RK2Calculation(out double calculationTime, List<List<InitVariable>> variablesAtAllStep = null, bool async = false)
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -49,6 +61,11 @@
             return result;
         }
 
+        /// <summary>
+        /// Method calculates a differential equation system with RK2 method
+        /// </summary>
+        /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
+        /// <returns>List of result variables</returns>
         private List<InitVariable> RK2Sync(List<List<InitVariable>> variablesAtAllStep)
         {
             // Put left variables, constants and time variable in the one containier
@@ -129,6 +146,11 @@
             return result;
         }
 
+        /// <summary>
+        /// Method calculates a differential equation system with RK2 method
+        /// </summary>
+        /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
+        /// <returns>List of result variables</returns>
         private List<InitVariable> RK2Async(List<List<InitVariable>> variablesAtAllStep)
         {
             // Put left variables, constants and time variable in the one containier
