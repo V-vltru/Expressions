@@ -37,6 +37,10 @@ namespace SystemTest
             double calcTimeRK2 = 0;
             List<List<InitVariable>> perTimeRK2 = new List<List<InitVariable>>();
             List<InitVariable> resultRK2 = differentialEquationSystem.RK2Calculation(out calcTimeRK2, perTimeRK2, true);
+
+            double calcTimeRK4 = 0;
+            List<List<InitVariable>> perTimeRK4 = new List<List<InitVariable>>();
+            List<InitVariable> resultRK4 = differentialEquationSystem.RK4Calculation(out calcTimeRK4, perTimeRK4, true);
         }
     }
 }
