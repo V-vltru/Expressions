@@ -159,6 +159,7 @@
                     case CalculationTypeNames.ForecastCorrection: F = this.ForecastCorrectionAsync; break;
                     case CalculationTypeNames.RK2: F = this.RK2Async; break;
                     case CalculationTypeNames.RK4: F = this.RK4Async; break;
+                    case CalculationTypeNames.AdamsExtrapolationOne: F = this.AdamsExtrapolationOneAsync; break;
                     default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
                 }
             }
@@ -170,6 +171,7 @@
                     case CalculationTypeNames.ForecastCorrection: F = this.ForecastCorrectionSync; break;
                     case CalculationTypeNames.RK2: F = this.RK2Sync; break;
                     case CalculationTypeNames.RK4: F = this.RK4Sync; break;
+                    case CalculationTypeNames.AdamsExtrapolationOne: F = this.AdamsExtrapolationOneSync; break;
                     default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
                 }
             }

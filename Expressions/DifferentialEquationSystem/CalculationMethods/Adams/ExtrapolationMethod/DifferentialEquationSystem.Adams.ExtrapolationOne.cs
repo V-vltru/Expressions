@@ -6,48 +6,7 @@
     using Expressions.Models;
 
     public partial class DifferentialEquationSystem
-    {
-        public List<InitVariable> AdamsExtrapolationOneCalculation(List<List<InitVariable>> variablesAtAllStep = null, bool async = false)
-        {
-            // Checking the correctness of input variables
-            DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
-
-            if (!async)
-            {
-                return this.AdamsExtrapolationOneSync(variablesAtAllStep);
-            }
-            else
-            {
-                return this.AdamsExtrapolationOneAsync(variablesAtAllStep);
-            }
-        }
-
-        public List<InitVariable> AdamsExtrapolationOneCalculation(out double calculationTime, List<List<InitVariable>> variablesAtAllStep = null, bool async = false)
-        {
-            Stopwatch stopwatch = new Stopwatch();
-            // Checking the correctness of input variables
-            DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
-
-            // Start time recording
-            stopwatch.Start();
-
-            List<InitVariable> result;
-            if (!async)
-            {
-                result = this.AdamsExtrapolationOneSync(variablesAtAllStep);
-            }
-            else
-            {
-                result = this.AdamsExtrapolationOneAsync(variablesAtAllStep);
-            }
-
-            // Stop time recording
-            stopwatch.Stop();
-            calculationTime = stopwatch.ElapsedMilliseconds / 1000.0;
-
-            return result;
-        }
-
+    {        
         public List<InitVariable> AdamsExtrapolationOneSync(List<List<InitVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
@@ -77,18 +36,14 @@
             // Varables at "timestart + tau" is supposed to be calculated with other method
             // It was chosen to use Euler method
             // Generated a new instance for its calculation
-            DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem
-            {
-                ExpressionSystem = this.ExpressionSystem,
-                LeftVariables = this.LeftVariables,
-                Constants = this.Constants,
-                TimeVariable = this.TimeVariable,
-                TEnd = this.TimeVariable.Value + this.Tau,
-                Tau = this.Tau
-            };
+            DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem(this.ExpressionSystem, this.LeftVariables, this.Constants,
+                this.TimeVariable, this.TimeVariable.Value + this.Tau, this.Tau);           
 
             // Calculation
-            List<Variable> firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(differentialEquationSystem.EulerCalculation());
+            List<Variable> firstLeftVariables;
+            List<InitVariable> bufer;
+            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out bufer);
+            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(bufer);
 
             // Save the second variables calculated with Euler method
             if (variablesAtAllStep != null)
@@ -173,18 +128,14 @@
             // Varables at "timestart + tau" is supposed to be calculated with other method
             // It was chosen to use Euler method
             // Generated a new instance for its calculation
-            DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem
-            {
-                ExpressionSystem = this.ExpressionSystem,
-                LeftVariables = this.LeftVariables,
-                Constants = this.Constants,
-                TimeVariable = this.TimeVariable,
-                TEnd = this.TimeVariable.Value + this.Tau,
-                Tau = this.Tau
-            };
+            DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem(this.ExpressionSystem, this.LeftVariables, this.Constants,
+                this.TimeVariable, this.TimeVariable.Value + this.Tau, this.Tau);
 
             // Calculation
-            List<Variable> firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(differentialEquationSystem.EulerCalculation());
+            List<Variable> firstLeftVariables;
+            List<InitVariable> bufer;
+            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out bufer);
+            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(bufer);
 
             // Save the second variables calculated with Euler method
             if (variablesAtAllStep != null)
