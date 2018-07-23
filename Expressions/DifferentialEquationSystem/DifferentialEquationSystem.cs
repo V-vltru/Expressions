@@ -2,9 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.Diagnostics;
     using Expressions;
     using Expressions.Models;
 
@@ -84,6 +82,26 @@
         }
 
         /// <summary>
+        /// Sets the initial parameters of the DifferentialEquationSystem class.
+        /// </summary>
+        /// <param name="expressionSystem">List of expressions</param>
+        /// <param name="leftVariables">List of left variables</param>
+        /// <param name="constants">List of constants</param>
+        /// <param name="timeVariable">Start time (presents in the expressions)</param>
+        /// <param name="tEnd">End time</param>
+        /// <param name="tau">Calculation step</param>
+        private DifferentialEquationSystem(List<Expression> expressionSystem, List<Variable> leftVariables,
+            List<Variable> constants, Variable timeVariable, double tEnd, double tau)
+        {
+            this.ExpressionSystem = expressionSystem;
+            this.LeftVariables = leftVariables;
+            this.Constants = constants;
+            this.TimeVariable = timeVariable;
+            this.TEnd = tEnd;
+            this.Tau = tau;
+        }
+
+        /// <summary>
         /// Gets or sets the list of the constant variables in the right part
         /// </summary>
         private List<Variable> Constants { get; set; }
@@ -117,5 +135,51 @@
         /// Gets or sets the time parameter if it exists in at least one differential equation
         /// </summary>
         public Variable TimeVariable { get; set; }
+
+        /// <summary>
+        /// Main method which performs a calculation
+        /// </summary>
+        /// <param name="calculationType">Name of the calculation method</param>
+        /// <param name="results">Containier where result variables are supposed to be saved</param>
+        /// <param name="variablesAtAllStep">Container of variables at each calculation step</param>
+        /// <param name="async">Flag which specifies if it is calculated in parallel mode</param>
+        /// <returns>Calculation time</returns>
+        public double Calculate(CalculationTypeNames calculationType, out List<InitVariable> results, List<List<InitVariable>> variablesAtAllStep = null, bool async = false)
+        {
+            // Checking the correctness of input variables
+            DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
+
+            Func<List<List<InitVariable>>, List<InitVariable>> F;
+
+            if (async)
+            {
+                switch (calculationType)
+                {
+                    case CalculationTypeNames.Euler: F = this.EulerAsync; break;
+                    case CalculationTypeNames.ForecastCorrection: F = this.ForecastCorrectionAsync; break;
+                    case CalculationTypeNames.RK2: F = this.RK2Async; break;
+                    case CalculationTypeNames.RK4: F = this.RK4Async; break;
+                    default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
+                }
+            }
+            else
+            {
+                switch (calculationType)
+                {
+                    case CalculationTypeNames.Euler: F = this.EulerSync; break;
+                    case CalculationTypeNames.ForecastCorrection: F = this.ForecastCorrectionSync; break;
+                    case CalculationTypeNames.RK2: F = this.RK2Sync; break;
+                    case CalculationTypeNames.RK4: F = this.RK4Sync; break;
+                    default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
+                }
+            }
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            results = F(variablesAtAllStep);
+            stopwatch.Stop();
+
+            return stopwatch.ElapsedMilliseconds / 1000.0;
+        }
     }
 }

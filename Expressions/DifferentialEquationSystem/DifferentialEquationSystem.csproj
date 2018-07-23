@@ -44,6 +44,7 @@
     <Compile Include="CalculationMethods\DifferentialEquationSystem.ForecastCorrection.cs" />
     <Compile Include="CalculationMethods\DifferentialEquationSystem.RK2.cs" />
     <Compile Include="CalculationMethods\DifferentialEquationSystem.RK4.cs" />
+    <Compile Include="CalculationTypeNames.cs" />
     <Compile Include="DifferentialEquationSystem.cs" />
     <Compile Include="DifferentialEquationSystemHelpers.cs" />
     <Compile Include="InitVariable.cs" />

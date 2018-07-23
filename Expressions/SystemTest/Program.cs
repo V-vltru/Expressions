@@ -28,19 +28,23 @@ namespace SystemTest
             DifferentialEquationSystem.DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem.DifferentialEquationSystem(expressions, leftVariables, null, timeVariable, 1.5, 0.001);
             List<List<InitVariable>> perTime = new List<List<InitVariable>>();
             double calcTime = 0;
-            List<InitVariable> resultEuler = differentialEquationSystem.EulerCalculation(out calcTime, perTime, true);
+            List<InitVariable> resultEuler;
+            calcTime = differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out resultEuler, perTime, true);
 
             double calcTimeForecast = 0;
             List<List<InitVariable>> perTimeForecast = new List<List<InitVariable>>();
-            List<InitVariable> resultForecastCorrection = differentialEquationSystem.ForecastCorrectionCalculation(out calcTimeForecast, perTimeForecast, true);
+            List<InitVariable> resultForecastCorrection;
+            calcTimeForecast = differentialEquationSystem.Calculate(CalculationTypeNames.ForecastCorrection, out resultForecastCorrection, perTimeForecast, true);
 
             double calcTimeRK2 = 0;
             List<List<InitVariable>> perTimeRK2 = new List<List<InitVariable>>();
-            List<InitVariable> resultRK2 = differentialEquationSystem.RK2Calculation(out calcTimeRK2, perTimeRK2, true);
+            List<InitVariable> resultRK2;
+            calcTimeRK2 = differentialEquationSystem.Calculate(CalculationTypeNames.RK2, out resultRK2, perTimeRK2, true);
 
             double calcTimeRK4 = 0;
             List<List<InitVariable>> perTimeRK4 = new List<List<InitVariable>>();
-            List<InitVariable> resultRK4 = differentialEquationSystem.RK4Calculation(out calcTimeRK4, perTimeRK4, true);
+            List<InitVariable> resultRK4;
+            calcTimeRK4 = differentialEquationSystem.Calculate(CalculationTypeNames.RK4, out resultRK4, perTimeRK4, true);
         }
     }
 }
