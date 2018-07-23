@@ -6,61 +6,7 @@
     using Expressions.Models;
     
     public partial class DifferentialEquationSystem
-    {
-        /// <summary>
-        /// Method calculates a differential equation system with Forecast-Correction method
-        /// </summary>
-        /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
-        /// <param name="async">Flag which specifies if calculation should be performed in parallel mode</param>
-        /// <returns>List of result variables</returns>
-        public List<InitVariable> ForecastCorrectionCalculation(List<List<InitVariable>> variablesAtAllStep = null, bool async = false)
-        {
-            // Checking the correctness of input variables
-            DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
-
-            if (!async)
-            {
-                return this.ForecastCorrectionSync(variablesAtAllStep);
-            }
-            else
-            {
-                return this.ForecastCorrectionAsync(variablesAtAllStep);
-            }
-        }
-
-        /// <summary>
-        /// Method calculates a differential equation system with Forecast-Correction method
-        /// </summary>
-        /// <param name="calculationTime">Referenced parameter where calculation time is supposed to be loacted</param>
-        /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
-        /// <param name="async">Flag which specifies if calculation should be performed in parallel mode</param>
-        /// <returns>List of result variables</returns>
-        public List<InitVariable> ForecastCorrectionCalculation(out double calculationTime, List<List<InitVariable>> variablesAtAllStep = null, bool async = false)
-        {
-            Stopwatch stopwatch = new Stopwatch();
-            // Checking the correctness of input variables
-            DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
-
-            // Start time recording
-            stopwatch.Start();
-
-            List<InitVariable> result;
-            if (!async)
-            {
-                result = this.ForecastCorrectionSync(variablesAtAllStep);
-            }
-            else
-            {
-                result = this.ForecastCorrectionAsync(variablesAtAllStep);
-            }
-
-            // Stop time recording
-            stopwatch.Stop();
-            calculationTime = stopwatch.ElapsedMilliseconds / 1000.0;
-
-            return result;
-        }
-
+    {        
         /// <summary>
         /// Method calculates a differential equation system with Forecast-Correction method
         /// </summary>
