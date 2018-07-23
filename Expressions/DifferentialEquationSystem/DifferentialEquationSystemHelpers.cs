@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using Expressions;
-using Expressions.Models;
-
-namespace DifferentialEquationSystem
+﻿namespace DifferentialEquationSystem
 {
+    using System;
+    using System.Collections.Generic;
+    using Expressions;
+    using Expressions.Models;
+
     public static class DifferentialEquationSystemHelpers
     {
         /// <summary>
         /// Method converts List<InitVariable> items to List<Variable> items
         /// </summary>
-        /// <param name="initVariables"></param>
-        /// <returns></returns>
-        public static List<Variable> ConvertVariablesToInitVariables(List<InitVariable> initVariables)
+        /// <param name="initVariables">Instance of List<InitVariable></param>
+        /// <returns>List of Variables</returns>
+        public static List<Variable> ConvertInitVariablesToVariables(List<InitVariable> initVariables)
         {
             List<Variable> result = new List<Variable>();
             foreach (InitVariable initVariable in initVariables)
@@ -26,9 +26,9 @@ namespace DifferentialEquationSystem
         /// <summary>
         /// Method converts List<Variable> items to List<InitVariable> items
         /// </summary>
-        /// <param name="variables"></param>
-        /// <returns></returns>
-        public static List<InitVariable> ConvertInitVariableToVariable(List<Variable> variables)
+        /// <param name="variables">Instance of List<InitVariable></param>
+        /// <returns>List of Variables</returns>
+        public static List<InitVariable> ConvertVariableToInitVariable(List<Variable> variables)
         {
             List<InitVariable> result = new List<InitVariable>();
             foreach (Variable variable in variables)
@@ -134,5 +134,48 @@ namespace DifferentialEquationSystem
         }
 
         #endregion
+
+        /// <summary>
+        /// Method saves current left variables and current time to statistics
+        /// </summary>
+        /// <param name="statistics">Container where left variables for each time are saved</param>
+        /// <param name="leftVariables">Current left variables</param>
+        /// <param name="currentTime">Current time</param>
+        public static void SaveLeftVariableToStatistics(List<List<InitVariable>> statistics, List<Variable> leftVariables, Variable currentTime)
+        {
+            if (statistics != null)
+            {
+                // Copying of the initial left variables to the separate list which when is going to "variablesAtAllStep" containier
+                List<InitVariable> initLeftVariables = new List<InitVariable>();
+                DifferentialEquationSystemHelpers.CopyVariables(leftVariables, initLeftVariables);
+
+                // Current time is also required to be saved in the intermediate vlues
+                initLeftVariables.Add(new InitVariable(currentTime));
+                statistics.Add(initLeftVariables);
+            }
+        }
+
+        /// <summary>
+        /// Method collects left variables, constants and time parameter into one containier
+        /// </summary>
+        /// <param name="leftVariables">Left variables</param>
+        /// <param name="constants">Constants</param>
+        /// <param name="time">Time parameters</param>
+        /// <returns>Container which contains left variables, constants and time parameter</returns>
+        public static List<Variable> CollectVariables(List<Variable> leftVariables, List<Variable> constants, Variable time)
+        {
+            List<Variable> allVars = new List<Variable>();
+            allVars.AddRange(leftVariables);
+            if (constants != null)
+            {
+                if (constants.Count > 0)
+                {
+                    allVars.AddRange(constants);
+                }
+            }
+
+            allVars.Add(time);
+            return allVars;
+        }
     }
 }

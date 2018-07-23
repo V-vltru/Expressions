@@ -1,10 +1,5 @@
 ﻿namespace DifferentialEquationSystem
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Expressions.Models;
 
     public class InitVariable
@@ -47,18 +42,40 @@
         /// </summary>
         public double Value { get; set; }
 
-        public static implicit operator Variable(InitVariable init)
+        /// <summary>
+        /// Method implicitly converts InitVariable instance to the Variable one
+        /// </summary>
+        /// <param name="initVariable">InitVariable instance</param>
+        public static implicit operator Variable(InitVariable initVariable)
         {
-            Variable result = new Variable(init.Name, init.Value);
+            if (initVariable != null)
+            {
+                Variable result = new Variable(initVariable.Name, initVariable.Value);
 
-            return result;
+                return result;
+            }
+            else
+            {
+                return null;
+            }
         }
 
+        /// <summary>
+        /// Method implicitly converts Variable instance to the InitVariable one
+        /// </summary>
+        /// <param name="variable">Variable instance</param>
         public static implicit operator InitVariable(Variable variable)
         {
-            InitVariable result = new InitVariable(variable.Name, variable.Value);
+            if (variable != null)
+            {
+                InitVariable result = new InitVariable(variable.Name, variable.Value);
 
-            return result;
+                return result;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

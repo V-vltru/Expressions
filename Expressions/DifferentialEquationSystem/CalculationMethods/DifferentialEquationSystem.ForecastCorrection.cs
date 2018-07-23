@@ -89,26 +89,13 @@
                 // It has to be clear
                 variablesAtAllStep.Clear();
 
-                // Copying of the initial left variables to the separate list which when is going to "variablesAtAllStep" containier
-                List<InitVariable> initLeftVariables = new List<InitVariable>();
-                DifferentialEquationSystemHelpers.CopyVariables(this.LeftVariables, initLeftVariables);
-
-                // Current time is also required to be saved in the intermediate vlues
-                initLeftVariables.Add(currentTime);
-                variablesAtAllStep.Add(initLeftVariables);               
+                DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, this.LeftVariables, currentTime);
             }
 
             do
             {
                 // Combinig of variables to calculate the next step results
-                allVars = new List<Variable>();
-                allVars.AddRange(currentLeftVariables);
-                if (this.Constants != null && this.Constants.Count > 0)
-                {
-                    allVars.AddRange(this.Constants);
-                }
-
-                allVars.Add(currentTime);
+                allVars = DifferentialEquationSystemHelpers.CollectVariables(currentLeftVariables, this.Constants, currentTime);
 
                 // Calculation of functions values for the next steps
                 List<double> FCurrent = new List<double>();
@@ -124,15 +111,8 @@
                 }
 
                 // Combinig of variables with ones taken from the previous iteration (variables for the next step)
-                allVars.Clear();
-                allVars.AddRange(predictedLeftVariables);
-                if (this.Constants != null && this.Constants.Count > 0)
-                {
-                    allVars.AddRange(this.Constants);
-                }
-
-                Variable predictedTime = new Variable(currentTime.Name, currentTime.Value + this.Tau);
-                allVars.Add(predictedTime);
+                allVars = DifferentialEquationSystemHelpers.CollectVariables(predictedLeftVariables, this.Constants, 
+                    new Variable(currentTime.Name, currentTime.Value + this.Tau));
 
                 // Calculation of predicted variables 
                 List<double> FPredicted = new List<double>();
@@ -150,11 +130,8 @@
                 // Saving of all variables at current iteration
                 if (variablesAtAllStep != null)
                 {
-                    List<InitVariable> varsAtIteration = new List<InitVariable>();
-                    DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, varsAtIteration);
-                    varsAtIteration.Add(new Variable(currentTime.Name, currentTime.Value + this.Tau));
-
-                    variablesAtAllStep.Add(varsAtIteration);
+                    DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables, 
+                        new Variable(currentTime.Name, currentTime.Value + this.Tau));
                 }
 
                 // Next variables are becoming the current ones for the next iteration
@@ -196,26 +173,13 @@
                 // It has to be clear
                 variablesAtAllStep.Clear();
 
-                // Copying of the initial left variables to the separate list which when is going to "variablesAtAllStep" containier
-                List<InitVariable> initLeftVariables = new List<InitVariable>();
-                DifferentialEquationSystemHelpers.CopyVariables(this.LeftVariables, initLeftVariables);
-
-                // Current time is also required to be saved in the intermediate vlues
-                initLeftVariables.Add(currentTime);
-                variablesAtAllStep.Add(initLeftVariables);
+                DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, this.LeftVariables, currentTime);
             }
 
             do
             {
                 // Combinig of variables to calculate the next step results
-                allVars = new List<Variable>();
-                allVars.AddRange(currentLeftVariables);
-                if (this.Constants != null && this.Constants.Count > 0)
-                {
-                    allVars.AddRange(this.Constants);
-                }
-
-                allVars.Add(currentTime);
+                allVars = DifferentialEquationSystemHelpers.CollectVariables(currentLeftVariables, this.Constants, currentTime);
 
                 // Calculation of functions values for the next steps
                 double[] FCurrent = new double[this.ExpressionSystem.Count];
@@ -231,15 +195,8 @@
                 });
 
                 // Combinig of variables with ones taken from the previous iteration (variables for the next step)
-                allVars.Clear();
-                allVars.AddRange(predictedLeftVariables);
-                if (this.Constants != null && this.Constants.Count > 0)
-                {
-                    allVars.AddRange(this.Constants);
-                }
-
-                Variable predictedTime = new Variable(currentTime.Name, currentTime.Value + this.Tau);
-                allVars.Add(predictedTime);
+                allVars = DifferentialEquationSystemHelpers.CollectVariables(predictedLeftVariables, this.Constants,
+                    new Variable(currentTime.Name, currentTime.Value + this.Tau));
 
                 // Calculation of the next variables
                 double[] FPredicted = new double[this.ExpressionSystem.Count];
@@ -257,11 +214,8 @@
 
                 if (variablesAtAllStep != null)
                 {
-                    List<InitVariable> varsAtIteration = new List<InitVariable>();
-                    DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, varsAtIteration);
-                    varsAtIteration.Add(new Variable(currentTime.Name, currentTime.Value + this.Tau));
-
-                    variablesAtAllStep.Add(varsAtIteration);
+                    DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables,
+                        new Variable(currentTime.Name, currentTime.Value + this.Tau));
                 }
 
                 DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, currentLeftVariables);
