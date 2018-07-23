@@ -87,26 +87,13 @@
                 // It has to be clear
                 variablesAtAllStep.Clear();
 
-                // Copying of the initial left variables to the separate list which when is going to "variablesAtAllStep" containier
-                List<InitVariable> initLeftVariables = new List<InitVariable>();
-                DifferentialEquationSystemHelpers.CopyVariables(this.LeftVariables, initLeftVariables);
-
-                // Current time is also required to be saved in the intermediate vlues
-                initLeftVariables.Add(currentTime);
-                variablesAtAllStep.Add(initLeftVariables);
+                DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, this.LeftVariables, currentTime);
             }
 
             do
             {
                 // Combinig of variables
-                allVars = new List<Variable>();
-                allVars.AddRange(currentLeftVariables);
-                if (this.Constants != null && this.Constants.Count > 0)
-                {
-                    allVars.AddRange(this.Constants);
-                }
-
-                allVars.Add(currentTime);
+                allVars = DifferentialEquationSystemHelpers.CollectVariables(currentLeftVariables, this.Constants, currentTime);
 
                 // Calculation 
                 for (int i = 0; i < nextLeftVariables.Count; i++)
@@ -117,11 +104,7 @@
                 // Saving of all variables at current iteration
                 if (variablesAtAllStep != null)
                 {
-                    List<InitVariable> varsAtIteration = new List<InitVariable>();
-                    DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, varsAtIteration);
-                    varsAtIteration.Add(new Variable(currentTime));
-
-                    variablesAtAllStep.Add(varsAtIteration);
+                    DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables, currentTime);
                 }
 
                 // Next variables are becoming the current ones for the next iteration
@@ -163,13 +146,7 @@
                 // It has to be clear
                 variablesAtAllStep.Clear();
 
-                // Copying of the initial left variables to the separate list which when is going to "variablesAtAllStep" containier
-                List<InitVariable> initLeftVariables = new List<InitVariable>();
-                DifferentialEquationSystemHelpers.CopyVariables(this.LeftVariables, initLeftVariables);
-
-                // Current time is also required to be saved in the intermediate vlues
-                initLeftVariables.Add(currentTime);
-                variablesAtAllStep.Add(initLeftVariables);
+                DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, this.LeftVariables, currentTime);
             }
 
             do
@@ -178,14 +155,7 @@
                 currentTime.Value += this.Tau;
 
                 // Combinig of variables
-                allVars = new List<Variable>();
-                allVars.AddRange(currentLeftVariables);
-                if (this.Constants != null && this.Constants.Count > 0)
-                {
-                    allVars.AddRange(this.Constants);
-                }
-
-                allVars.Add(currentTime);
+                allVars = DifferentialEquationSystemHelpers.CollectVariables(currentLeftVariables, this.Constants, currentTime);
 
                 Parallel.For(0, nextLeftVariables.Count, (i) =>
                 {
@@ -195,11 +165,7 @@
                 // Saving of all variables at current iteration
                 if (variablesAtAllStep != null)
                 {
-                    List<InitVariable> varsAtIteration = new List<InitVariable>();
-                    DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, varsAtIteration);
-                    varsAtIteration.Add(new Variable(currentTime));
-
-                    variablesAtAllStep.Add(varsAtIteration);
+                    DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables, currentTime);
                 }
 
                 // Next variables are becoming the current ones for the next iteration
