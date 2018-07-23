@@ -41,6 +41,10 @@ namespace SystemTest
             double calcTimeRK4 = 0;
             List<List<InitVariable>> perTimeRK4 = new List<List<InitVariable>>();
             List<InitVariable> resultRK4 = differentialEquationSystem.RK4Calculation(out calcTimeRK4, perTimeRK4, true);
+
+            double calcTimeAdams1 = 0;
+            List<List<InitVariable>> perTimeAdams1 = new List<List<InitVariable>>();
+            List<InitVariable> resultAdams1 = differentialEquationSystem.AdamsExtrapolationOneCalculation(out calcTimeAdams1, perTimeAdams1, false);
         }
     }
 }
