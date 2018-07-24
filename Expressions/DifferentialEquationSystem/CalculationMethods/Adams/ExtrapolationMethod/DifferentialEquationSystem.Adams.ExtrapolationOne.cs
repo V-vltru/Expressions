@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        public List<InitVariable> AdamsExtrapolationOneSync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<InitVariable> AdamsExtrapolationOneSync(List<List<InitVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
             List<Variable> allVars;
@@ -108,7 +108,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        public List<InitVariable> AdamsExtrapolationOneAsync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<InitVariable> AdamsExtrapolationOneAsync(List<List<InitVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
             List<Variable> allVars;
