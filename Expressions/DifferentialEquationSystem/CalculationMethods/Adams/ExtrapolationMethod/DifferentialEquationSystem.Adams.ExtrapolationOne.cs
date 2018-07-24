@@ -171,18 +171,18 @@
 
             do
             {
-                for (int i = 0; i < nextLeftVariables.Count; i++)
+                Parallel.For(0, nextLeftVariables.Count, (i) => 
                 {
                     nextLeftVariables[i].Value = currentLeftVariables[i].Value + 0.5 * (3 * Q[1, i] - Q[0, i]);
-                }
+                });
 
                 allVars = DifferentialEquationSystemHelpers.CollectVariables(nextLeftVariables, this.Constants, new Variable(currentTime.Name, currentTime.Value + this.Tau));
 
-                for (int i = 0; i < nextLeftVariables.Count; i++)
+                Parallel.For(0, nextLeftVariables.Count, (i) => 
                 {
                     Q[0, i] = Q[1, i];
                     Q[1, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
-                }
+                });                
 
                 if (variablesAtAllStep != null)
                 {
