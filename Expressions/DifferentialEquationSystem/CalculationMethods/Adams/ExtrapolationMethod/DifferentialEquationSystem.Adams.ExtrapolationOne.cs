@@ -1,12 +1,16 @@
 ﻿namespace DifferentialEquationSystem
 {
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Threading.Tasks;
     using Expressions.Models;
 
     public partial class DifferentialEquationSystem
-    {        
+    {
+        /// <summary>
+        /// Method calculates a differential equation system with Extrapolation Adams One method
+        /// </summary>
+        /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
+        /// <returns>List of result variables</returns>
         public List<InitVariable> AdamsExtrapolationOneSync(List<List<InitVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
@@ -99,6 +103,11 @@
             return result;
         }
 
+        /// <summary>
+        /// Method calculates a differential equation system with Extrapolation Adams One method
+        /// </summary>
+        /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
+        /// <returns>List of result variables</returns>
         public List<InitVariable> AdamsExtrapolationOneAsync(List<List<InitVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
