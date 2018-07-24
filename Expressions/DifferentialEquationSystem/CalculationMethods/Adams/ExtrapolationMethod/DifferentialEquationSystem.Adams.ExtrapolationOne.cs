@@ -80,7 +80,7 @@
                 for (int i = 0; i < nextLeftVariables.Count; i++)
                 {
                     Q[0, i] = Q[1, i];
-                    Q[1, i] = this.ExpressionSystem[i].GetResultValue(allVars);
+                    Q[1, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
                 }
 
                 if (variablesAtAllStep != null)
@@ -172,7 +172,12 @@
                 for (int i = 0; i < nextLeftVariables.Count; i++)
                 {
                     Q[0, i] = Q[1, i];
-                    Q[1, i] = this.ExpressionSystem[i].GetResultValue(allVars);
+                    Q[1, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
+                }
+
+                if (variablesAtAllStep != null)
+                {
+                    DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
                 }
 
                 DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, currentLeftVariables);
