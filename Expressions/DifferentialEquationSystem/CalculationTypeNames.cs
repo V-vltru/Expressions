@@ -11,6 +11,7 @@ namespace DifferentialEquationSystem
         Euler,
         ForecastCorrection,
         RK2,
-        RK4
+        RK4,
+        AdamsExtrapolationOne
     }
 }
