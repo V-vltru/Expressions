@@ -12,6 +12,7 @@ namespace DifferentialEquationSystem
         ForecastCorrection,
         RK2,
         RK4,
-        AdamsExtrapolationOne
+        AdamsExtrapolationOne,
+        AdamsExtrapolationTwo
     }
 }

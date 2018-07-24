@@ -7,11 +7,11 @@
     public partial class DifferentialEquationSystem
     {
         /// <summary>
-        /// Method calculates a differential equation system with Extrapolation Adams One method
+        /// Method calculates a differential equation system with Extrapolation Adams Two method
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> AdamsExtrapolationOneSync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<InitVariable> AdamsExtrapolationTwoSync(List<List<InitVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
             List<Variable> allVars;
@@ -37,28 +37,33 @@
             #endregion
 
             #region First variables
-            // Varables at "timestart + tau" is supposed to be calculated with other method
-            // It was chosen to use Euler method
-            // Generated a new instance for its calculation
+
             DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem(this.ExpressionSystem, this.LeftVariables, this.Constants,
-                this.TimeVariable, this.TimeVariable.Value + this.Tau, this.Tau);           
-
-            // Calculation
-            List<Variable> firstLeftVariables;
+                this.TimeVariable, this.TimeVariable.Value + 2 * this.Tau, this.Tau);
+            List<List<InitVariable>> firstVariables = new List<List<InitVariable>>();
             List<InitVariable> bufer;
-            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out bufer);
-            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(bufer);
+            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out bufer, firstVariables);
 
-            // Save the second variables calculated with Euler method
+            List<Variable> firstLeftVariables;
+            List<Variable> secondLeftVariables;
+
+            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(firstVariables[1]);
+            secondLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(firstVariables[2]);
+
+            firstLeftVariables.RemoveAt(firstLeftVariables.Count - 1);
+            secondLeftVariables.RemoveAt(secondLeftVariables.Count - 1);
+
             if (variablesAtAllStep != null)
             {
                 DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, firstLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
+                DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, secondLeftVariables, new Variable(currentTime.Name, currentTime.Value + 2 * this.Tau));
             }
+
             #endregion
 
-            allVars = DifferentialEquationSystemHelpers.CollectVariables(currentLeftVariables, this.Constants, currentTime);
+            double[,] Q = new double[3, this.ExpressionSystem.Count];
 
-            double[,] Q = new double[2, this.ExpressionSystem.Count];
+            allVars = DifferentialEquationSystemHelpers.CollectVariables(currentLeftVariables, this.Constants, currentTime);
             for (int i = 0; i < this.ExpressionSystem.Count; i++)
             {
                 Q[0, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
@@ -72,29 +77,40 @@
                 Q[1, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
             }
 
+            currentTime.Value += this.Tau;
+            allVars = DifferentialEquationSystemHelpers.CollectVariables(secondLeftVariables, this.Constants, currentTime);
+
+            for (int i = 0; i < this.ExpressionSystem.Count; i++)
+            {
+                Q[2, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
+            }
+
+            DifferentialEquationSystemHelpers.CopyVariables(secondLeftVariables, currentLeftVariables);
+
             do
             {
                 for (int i = 0; i < nextLeftVariables.Count; i++)
                 {
-                    nextLeftVariables[i].Value = currentLeftVariables[i].Value + 0.5 * (3 * Q[1, i] - Q[0, i]);
+                    nextLeftVariables[i].Value = currentLeftVariables[i].Value + 1.0 / 12 * (23 * Q[2, i] - 16 * Q[1, i] + 5 * Q[0, i]);
                 }
 
                 allVars = DifferentialEquationSystemHelpers.CollectVariables(nextLeftVariables, this.Constants, new Variable(currentTime.Name, currentTime.Value + this.Tau));
 
-                for (int i = 0; i < nextLeftVariables.Count; i++)
+                for(int i = 0; i < nextLeftVariables.Count; i++)
                 {
                     Q[0, i] = Q[1, i];
-                    Q[1, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
+                    Q[1, i] = Q[2, i];
+                    Q[2, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
                 }
 
                 if (variablesAtAllStep != null)
                 {
-                    DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
+                    DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables, 
+                        new Variable(currentTime.Name, currentTime.Value + this.Tau));
                 }
 
                 DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, currentLeftVariables);
 
-                // calculation time incrimentation
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
@@ -104,11 +120,11 @@
         }
 
         /// <summary>
-        /// Method calculates a differential equation system with Extrapolation Adams One method
+        /// Method calculates a differential equation system with Extrapolation Adams Two method
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> AdamsExtrapolationOneAsync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<InitVariable> AdamsExtrapolationTwoAsync(List<List<InitVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
             List<Variable> allVars;
@@ -134,33 +150,39 @@
             #endregion
 
             #region First variables
-            // Varables at "timestart + tau" is supposed to be calculated with other method
-            // It was chosen to use Euler method
-            // Generated a new instance for its calculation
+
             DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem(this.ExpressionSystem, this.LeftVariables, this.Constants,
-                this.TimeVariable, this.TimeVariable.Value + this.Tau, this.Tau);
-
-            // Calculation
-            List<Variable> firstLeftVariables;
+                this.TimeVariable, this.TimeVariable.Value + 2 * this.Tau, this.Tau);
+            List<List<InitVariable>> firstVariables = new List<List<InitVariable>>();
             List<InitVariable> bufer;
-            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out bufer);
-            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(bufer);
+            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out bufer, firstVariables);
 
-            // Save the second variables calculated with Euler method
+            List<Variable> firstLeftVariables;
+            List<Variable> secondLeftVariables;
+
+            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(firstVariables[1]);
+            secondLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(firstVariables[2]);
+
+            firstLeftVariables.RemoveAt(firstLeftVariables.Count - 1);
+            secondLeftVariables.RemoveAt(secondLeftVariables.Count - 1);
+
             if (variablesAtAllStep != null)
             {
                 DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, firstLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
+                DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, secondLeftVariables, new Variable(currentTime.Name, currentTime.Value + 2 * this.Tau));
             }
+
             #endregion
+
+            double[,] Q = new double[3, this.ExpressionSystem.Count];
 
             allVars = DifferentialEquationSystemHelpers.CollectVariables(currentLeftVariables, this.Constants, currentTime);
 
-            double[,] Q = new double[2, this.ExpressionSystem.Count];
             Parallel.For(0, this.ExpressionSystem.Count, (i) => 
             {
                 Q[0, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
             });
-
+            
             currentTime.Value += this.Tau;
             allVars = DifferentialEquationSystemHelpers.CollectVariables(firstLeftVariables, this.Constants, currentTime);
 
@@ -169,11 +191,21 @@
                 Q[1, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
             });
 
+            currentTime.Value += this.Tau;
+            allVars = DifferentialEquationSystemHelpers.CollectVariables(secondLeftVariables, this.Constants, currentTime);
+
+            Parallel.For(0, this.ExpressionSystem.Count, (i) => 
+            {
+                Q[2, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
+            });
+
+            DifferentialEquationSystemHelpers.CopyVariables(secondLeftVariables, currentLeftVariables);
+
             do
             {
                 Parallel.For(0, nextLeftVariables.Count, (i) => 
                 {
-                    nextLeftVariables[i].Value = currentLeftVariables[i].Value + 0.5 * (3 * Q[1, i] - Q[0, i]);
+                    nextLeftVariables[i].Value = currentLeftVariables[i].Value + 1.0 / 12 * (23 * Q[2, i] - 16 * Q[1, i] + 5 * Q[0, i]);
                 });
 
                 allVars = DifferentialEquationSystemHelpers.CollectVariables(nextLeftVariables, this.Constants, new Variable(currentTime.Name, currentTime.Value + this.Tau));
@@ -181,17 +213,18 @@
                 Parallel.For(0, nextLeftVariables.Count, (i) => 
                 {
                     Q[0, i] = Q[1, i];
-                    Q[1, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
-                });                
+                    Q[1, i] = Q[2, i];
+                    Q[2, i] = this.Tau * this.ExpressionSystem[i].GetResultValue(allVars);
+                });
 
                 if (variablesAtAllStep != null)
                 {
-                    DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
+                    DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables,
+                        new Variable(currentTime.Name, currentTime.Value + this.Tau));
                 }
 
                 DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, currentLeftVariables);
 
-                // calculation time incrimentation
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
