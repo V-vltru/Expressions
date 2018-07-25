@@ -162,6 +162,7 @@
                     case CalculationTypeNames.AdamsExtrapolationOne: F = this.AdamsExtrapolationOneAsync; break;
                     case CalculationTypeNames.AdamsExtrapolationTwo: F = this.AdamsExtrapolationTwoAsync; break;
                     case CalculationTypeNames.AdamsExtrapolationThree: F = this.AdamsExtrapolationThreeAsync; break;
+                    case CalculationTypeNames.AdamsExtrapolationFour: F = this.AdamsExtrapolationFourAsync; break;
                     default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
                 }
             }
@@ -176,6 +177,7 @@
                     case CalculationTypeNames.AdamsExtrapolationOne: F = this.AdamsExtrapolationOneSync; break;
                     case CalculationTypeNames.AdamsExtrapolationTwo: F = this.AdamsExtrapolationTwoSync; break;
                     case CalculationTypeNames.AdamsExtrapolationThree: F = this.AdamsExtrapolationThreeSync; break;
+                    case CalculationTypeNames.AdamsExtrapolationFour: F = this.AdamsExtrapolationFourSync; break;
                     default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
                 }
             }
