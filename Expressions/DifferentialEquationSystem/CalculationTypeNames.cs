@@ -13,6 +13,7 @@ namespace DifferentialEquationSystem
         RK2,
         RK4,
         AdamsExtrapolationOne,
-        AdamsExtrapolationTwo
+        AdamsExtrapolationTwo,
+        AdamsExtrapolationThree
     }
 }
