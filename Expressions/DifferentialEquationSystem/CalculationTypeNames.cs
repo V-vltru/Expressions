@@ -14,6 +14,7 @@ namespace DifferentialEquationSystem
         RK4,
         AdamsExtrapolationOne,
         AdamsExtrapolationTwo,
-        AdamsExtrapolationThree
+        AdamsExtrapolationThree,
+        AdamsExtrapolationFour
     }
 }

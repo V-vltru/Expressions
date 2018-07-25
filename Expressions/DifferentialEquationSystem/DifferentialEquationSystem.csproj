@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculationMethods\Adams\ExtrapolationMethod\DifferentialEquationSystem.Adams.ExtrapolationFour.cs" />
     <Compile Include="CalculationMethods\Adams\ExtrapolationMethod\DifferentialEquationSystem.Adams.ExtrapolationOne.cs" />
     <Compile Include="CalculationMethods\Adams\ExtrapolationMethod\DifferentialEquationSystem.Adams.ExtrapolationThree.cs" />
     <Compile Include="CalculationMethods\Adams\ExtrapolationMethod\DifferentialEquationSystem.Adams.ExtrapolationTwo.cs" />
