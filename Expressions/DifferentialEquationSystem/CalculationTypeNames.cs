@@ -15,6 +15,7 @@ namespace DifferentialEquationSystem
         AdamsExtrapolationOne,
         AdamsExtrapolationTwo,
         AdamsExtrapolationThree,
-        AdamsExtrapolationFour
+        AdamsExtrapolationFour,
+        Miln
     }
 }
