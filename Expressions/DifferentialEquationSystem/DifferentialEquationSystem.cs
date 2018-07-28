@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Concurrent;
     using System.Diagnostics;
     using Expressions;
     using Expressions.Models;
+    using System.Threading.Tasks;
 
     public partial class DifferentialEquationSystem
     {
@@ -29,12 +31,12 @@
             // Setting up of variables and constants
             if (leftVariables != null)
             {
-                this.LeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(leftVariables);
+                this.LeftVariables = DifferentialEquationSystem.ConvertInitVariablesToVariables(leftVariables);
             }
 
             if (constants != null)
             {
-                this.Constants = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(constants);
+                this.Constants = DifferentialEquationSystem.ConvertInitVariablesToVariables(constants);
             }
 
             if (timeVariable != null)
@@ -78,7 +80,7 @@
             this.TEnd = tEnd;
             this.Tau = tau;
 
-            DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
+            DifferentialEquationSystem.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
         }
 
         /// <summary>
@@ -147,42 +149,9 @@
         public double Calculate(CalculationTypeNames calculationType, out List<InitVariable> results, List<List<InitVariable>> variablesAtAllStep = null, bool async = false)
         {
             // Checking the correctness of input variables
-            DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
+            DifferentialEquationSystem.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
 
-            Func<List<List<InitVariable>>, List<InitVariable>> F;
-
-            if (async)
-            {
-                switch (calculationType)
-                {
-                    case CalculationTypeNames.Euler: F = this.EulerAsync; break;
-                    case CalculationTypeNames.ForecastCorrection: F = this.ForecastCorrectionAsync; break;
-                    case CalculationTypeNames.RK2: F = this.RK2Async; break;
-                    case CalculationTypeNames.RK4: F = this.RK4Async; break;
-                    case CalculationTypeNames.AdamsExtrapolationOne: F = this.AdamsExtrapolationOneAsync; break;
-                    case CalculationTypeNames.AdamsExtrapolationTwo: F = this.AdamsExtrapolationTwoAsync; break;
-                    case CalculationTypeNames.AdamsExtrapolationThree: F = this.AdamsExtrapolationThreeAsync; break;
-                    case CalculationTypeNames.AdamsExtrapolationFour: F = this.AdamsExtrapolationFourAsync; break;
-                    case CalculationTypeNames.Miln: F = this.MilnAsync; break;
-                    default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
-                }
-            }
-            else
-            {
-                switch (calculationType)
-                {
-                    case CalculationTypeNames.Euler: F = this.EulerSync; break;
-                    case CalculationTypeNames.ForecastCorrection: F = this.ForecastCorrectionSync; break;
-                    case CalculationTypeNames.RK2: F = this.RK2Sync; break;
-                    case CalculationTypeNames.RK4: F = this.RK4Sync; break;
-                    case CalculationTypeNames.AdamsExtrapolationOne: F = this.AdamsExtrapolationOneSync; break;
-                    case CalculationTypeNames.AdamsExtrapolationTwo: F = this.AdamsExtrapolationTwoSync; break;
-                    case CalculationTypeNames.AdamsExtrapolationThree: F = this.AdamsExtrapolationThreeSync; break;
-                    case CalculationTypeNames.AdamsExtrapolationFour: F = this.AdamsExtrapolationFourSync; break;
-                    case CalculationTypeNames.Miln: F = this.MilnSync; break;
-                    default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
-                }
-            }
+            Func<List<List<InitVariable>>, List<InitVariable>> F = this.DefineSuitableMethod(calculationType, async);
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -190,6 +159,48 @@
             stopwatch.Stop();
 
             return stopwatch.ElapsedMilliseconds / 1000.0;
+        }
+
+        public async Task<ConcurrentDictionary<CalculationTypeNames, double>> Calculate(List<CalculationTypeNames> calculationTypes, ConcurrentDictionary<CalculationTypeNames, 
+            List<InitVariable>> results, ConcurrentDictionary<CalculationTypeNames, List<List<InitVariable>>> variablesAtAllSteps = null, bool async = false)
+        {
+            ConcurrentDictionary<CalculationTypeNames, double> timeResults = new ConcurrentDictionary<CalculationTypeNames, double>();
+
+            // Checking the correctness of input variables
+            DifferentialEquationSystem.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
+
+            List<Task> calculationTasks = new List<Task>();
+
+            foreach(CalculationTypeNames calculationType in calculationTypes)
+            {
+                Func<List<List<InitVariable>>, List<InitVariable>> F = this.DefineSuitableMethod(calculationType, async);
+                
+                Task calculationTask = new Task(() =>
+                {                    
+                    Stopwatch stopwatch = new Stopwatch();
+                    List<InitVariable> localResult;
+                    List<List<InitVariable>> variablesAtAllStepsForMethod = new List<List<InitVariable>>();
+
+                    stopwatch.Start();
+                    localResult = F(variablesAtAllStepsForMethod);
+                    stopwatch.Stop();
+
+                    results.TryAdd(calculationType, localResult);
+                    timeResults.TryAdd(calculationType, stopwatch.ElapsedMilliseconds / 1000.0);
+
+                    if (variablesAtAllSteps != null)
+                    {
+                        variablesAtAllSteps.TryAdd(calculationType, variablesAtAllStepsForMethod);
+                    }
+                });
+
+                calculationTask.Start();
+                calculationTasks.Add(calculationTask);
+            }
+
+            await Task.WhenAll(calculationTasks);
+
+            return timeResults;
         }
     }
 }
