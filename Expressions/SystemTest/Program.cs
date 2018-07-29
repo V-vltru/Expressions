@@ -70,6 +70,23 @@ namespace SystemTest
             List<List<InitVariable>> perTimeMiln = new List<List<InitVariable>>();
             List<InitVariable> resultMiln;
             calcTimeMiln = differentialEquationSystem.Calculate(CalculationTypeNames.Miln, out resultMiln, perTimeMiln, false);
+
+            #region CalculateWithGroupOfMethodsSync
+
+            List<CalculationTypeNames> calculationTypes = new List<CalculationTypeNames>
+            {
+                CalculationTypeNames.Euler,
+                CalculationTypeNames.RK2,
+                CalculationTypeNames.RK4,
+                CalculationTypeNames.ForecastCorrection
+            };
+
+            Dictionary<CalculationTypeNames, List<InitVariable>> results;
+            Dictionary<CalculationTypeNames, List<List<InitVariable>>> variablesAtAllSteps = new Dictionary<CalculationTypeNames, List<List<InitVariable>>>();
+
+            Dictionary<CalculationTypeNames, double> calcTimes = differentialEquationSystem.CalculateWithGroupOfMethodsSync(calculationTypes, out results, variablesAtAllSteps, false);
+
+            #endregion
         }
     }
 }
