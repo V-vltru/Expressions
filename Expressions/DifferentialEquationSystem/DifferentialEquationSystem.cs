@@ -45,20 +45,20 @@
             }
 
             // Setting up of all variables
-            this.AllVariables = new List<Variable>();
+            List<Variable> allVariables = new List<Variable>();
             if (this.LeftVariables != null)
             {
-                this.AllVariables.AddRange(this.LeftVariables);
+                allVariables.AddRange(this.LeftVariables);
             }
 
             if (this.Constants != null && this.Constants.Count > 0)
             {
-                this.AllVariables.AddRange(this.Constants);
+                allVariables.AddRange(this.Constants);
             }
 
             if (this.TimeVariable != null)
             {
-                this.AllVariables.Add(this.TimeVariable);
+                allVariables.Add(this.TimeVariable);
             }
 
             // Setting up of all expressions
@@ -68,10 +68,11 @@
             }
             else
             {
+                this.Expressions = expressions;
                 List<Expression> expressionSystem = new List<Expression>();
                 foreach (string expression in expressions)
                 {
-                    expressionSystem.Add(new Expression(expression, this.AllVariables));
+                    expressionSystem.Add(new Expression(expression, allVariables));
                 }
 
                 this.ExpressionSystem = expressionSystem;
@@ -106,37 +107,37 @@
         /// <summary>
         /// Gets or sets the list of the constant variables in the right part
         /// </summary>
-        private List<Variable> Constants { get; set; }
-
-        /// <summary>
-        /// Gets or sets all variables considered in differential equation system
-        /// </summary>
-        private List<Variable> AllVariables { get; set; }
+        public List<Variable> Constants { get; set; }
 
         /// <summary>
         /// Gets or sets the end time of the differental equation system calculation
         /// </summary>
-        private double TEnd { get; set; }
+        public double TEnd { get; set; }
 
         /// <summary>
         /// Gets or sets the calculation step
         /// </summary>
-        private double Tau { get; set; }
+        public double Tau { get; set; }
 
         /// <summary>
         /// Gets or sets the list of Expressions
         /// </summary>
-        private List<Expression> ExpressionSystem { get; set; }
+        public List<Expression> ExpressionSystem { get; set; }
 
         /// <summary>
         /// Gets or sets the list of left variables, presented in the differential equation system
         /// </summary>
-        private List<Variable> LeftVariables { get; set; }
+        public List<Variable> LeftVariables { get; set; }
 
         /// <summary>
         /// Gets or sets the time parameter if it exists in at least one differential equation
         /// </summary>
         public Variable TimeVariable { get; set; }
+
+        /// <summary>
+        /// Gets or sets a list of expressions in the right part of the system.
+        /// </summary>
+        public List<string> Expressions;
 
         /// <summary>
         /// Main method which performs a calculation
