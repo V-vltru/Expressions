@@ -105,6 +105,16 @@
         }
 
         /// <summary>
+        /// Sets the initial parameters of the DifferentialEquationSystem class.
+        /// </summary>
+        /// <param name="differentialEquationSystem">Input instance</param>
+        private DifferentialEquationSystem(DifferentialEquationSystem differentialEquationSystem):
+            this(differentialEquationSystem.ExpressionSystem, differentialEquationSystem.LeftVariables, differentialEquationSystem.Constants,
+                differentialEquationSystem.TimeVariable, differentialEquationSystem.TEnd, differentialEquationSystem.Tau)
+        {
+        }
+
+        /// <summary>
         /// Gets or sets the list of the constant variables in the right part
         /// </summary>
         public List<Variable> Constants { get; set; }

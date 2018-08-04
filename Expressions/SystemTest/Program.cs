@@ -78,7 +78,12 @@ namespace SystemTest
                 CalculationTypeNames.Euler,
                 CalculationTypeNames.RK2,
                 CalculationTypeNames.RK4,
-                CalculationTypeNames.ForecastCorrection
+                CalculationTypeNames.ForecastCorrection,
+                CalculationTypeNames.AdamsExtrapolationOne,
+                CalculationTypeNames.AdamsExtrapolationTwo,
+                CalculationTypeNames.AdamsExtrapolationThree,
+                CalculationTypeNames.AdamsExtrapolationFour,
+                CalculationTypeNames.Miln
             };
 
             Dictionary<CalculationTypeNames, List<InitVariable>> results;
