@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.Concurrent;
     using System.Diagnostics;
+    using System.Threading.Tasks;
     using Expressions;
-    using Expressions.Models;
+    using Expressions.Models;    
 
     public partial class DifferentialEquationSystem
     {
@@ -29,12 +31,12 @@
             // Setting up of variables and constants
             if (leftVariables != null)
             {
-                this.LeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(leftVariables);
+                this.LeftVariables = DifferentialEquationSystem.ConvertInitVariablesToVariables(leftVariables);
             }
 
             if (constants != null)
             {
-                this.Constants = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(constants);
+                this.Constants = DifferentialEquationSystem.ConvertInitVariablesToVariables(constants);
             }
 
             if (timeVariable != null)
@@ -43,20 +45,20 @@
             }
 
             // Setting up of all variables
-            this.AllVariables = new List<Variable>();
+            List<Variable> allVariables = new List<Variable>();
             if (this.LeftVariables != null)
             {
-                this.AllVariables.AddRange(this.LeftVariables);
+                allVariables.AddRange(this.LeftVariables);
             }
 
             if (this.Constants != null && this.Constants.Count > 0)
             {
-                this.AllVariables.AddRange(this.Constants);
+                allVariables.AddRange(this.Constants);
             }
 
             if (this.TimeVariable != null)
             {
-                this.AllVariables.Add(this.TimeVariable);
+                allVariables.Add(this.TimeVariable);
             }
 
             // Setting up of all expressions
@@ -66,10 +68,11 @@
             }
             else
             {
+                this.Expressions = expressions;
                 List<Expression> expressionSystem = new List<Expression>();
                 foreach (string expression in expressions)
                 {
-                    expressionSystem.Add(new Expression(expression, this.AllVariables));
+                    expressionSystem.Add(new Expression(expression, allVariables));
                 }
 
                 this.ExpressionSystem = expressionSystem;
@@ -78,7 +81,7 @@
             this.TEnd = tEnd;
             this.Tau = tau;
 
-            DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
+            DifferentialEquationSystem.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
         }
 
         /// <summary>
@@ -104,37 +107,37 @@
         /// <summary>
         /// Gets or sets the list of the constant variables in the right part
         /// </summary>
-        private List<Variable> Constants { get; set; }
-
-        /// <summary>
-        /// Gets or sets all variables considered in differential equation system
-        /// </summary>
-        private List<Variable> AllVariables { get; set; }
+        public List<Variable> Constants { get; set; }
 
         /// <summary>
         /// Gets or sets the end time of the differental equation system calculation
         /// </summary>
-        private double TEnd { get; set; }
+        public double TEnd { get; set; }
 
         /// <summary>
         /// Gets or sets the calculation step
         /// </summary>
-        private double Tau { get; set; }
+        public double Tau { get; set; }
 
         /// <summary>
         /// Gets or sets the list of Expressions
         /// </summary>
-        private List<Expression> ExpressionSystem { get; set; }
+        public List<Expression> ExpressionSystem { get; set; }
 
         /// <summary>
         /// Gets or sets the list of left variables, presented in the differential equation system
         /// </summary>
-        private List<Variable> LeftVariables { get; set; }        
+        public List<Variable> LeftVariables { get; set; }
 
         /// <summary>
         /// Gets or sets the time parameter if it exists in at least one differential equation
         /// </summary>
         public Variable TimeVariable { get; set; }
+
+        /// <summary>
+        /// Gets or sets a list of expressions in the right part of the system.
+        /// </summary>
+        public List<string> Expressions;
 
         /// <summary>
         /// Main method which performs a calculation
@@ -147,42 +150,9 @@
         public double Calculate(CalculationTypeNames calculationType, out List<InitVariable> results, List<List<InitVariable>> variablesAtAllStep = null, bool async = false)
         {
             // Checking the correctness of input variables
-            DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
+            DifferentialEquationSystem.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
 
-            Func<List<List<InitVariable>>, List<InitVariable>> F;
-
-            if (async)
-            {
-                switch (calculationType)
-                {
-                    case CalculationTypeNames.Euler: F = this.EulerAsync; break;
-                    case CalculationTypeNames.ForecastCorrection: F = this.ForecastCorrectionAsync; break;
-                    case CalculationTypeNames.RK2: F = this.RK2Async; break;
-                    case CalculationTypeNames.RK4: F = this.RK4Async; break;
-                    case CalculationTypeNames.AdamsExtrapolationOne: F = this.AdamsExtrapolationOneAsync; break;
-                    case CalculationTypeNames.AdamsExtrapolationTwo: F = this.AdamsExtrapolationTwoAsync; break;
-                    case CalculationTypeNames.AdamsExtrapolationThree: F = this.AdamsExtrapolationThreeAsync; break;
-                    case CalculationTypeNames.AdamsExtrapolationFour: F = this.AdamsExtrapolationFourAsync; break;
-                    case CalculationTypeNames.Miln: F = this.MilnAsync; break;
-                    default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
-                }
-            }
-            else
-            {
-                switch (calculationType)
-                {
-                    case CalculationTypeNames.Euler: F = this.EulerSync; break;
-                    case CalculationTypeNames.ForecastCorrection: F = this.ForecastCorrectionSync; break;
-                    case CalculationTypeNames.RK2: F = this.RK2Sync; break;
-                    case CalculationTypeNames.RK4: F = this.RK4Sync; break;
-                    case CalculationTypeNames.AdamsExtrapolationOne: F = this.AdamsExtrapolationOneSync; break;
-                    case CalculationTypeNames.AdamsExtrapolationTwo: F = this.AdamsExtrapolationTwoSync; break;
-                    case CalculationTypeNames.AdamsExtrapolationThree: F = this.AdamsExtrapolationThreeSync; break;
-                    case CalculationTypeNames.AdamsExtrapolationFour: F = this.AdamsExtrapolationFourSync; break;
-                    case CalculationTypeNames.Miln: F = this.MilnSync; break;
-                    default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
-                }
-            }
+            Func<List<List<InitVariable>>, List<InitVariable>> F = this.DefineSuitableMethod(calculationType, async);
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -190,6 +160,133 @@
             stopwatch.Stop();
 
             return stopwatch.ElapsedMilliseconds / 1000.0;
+        }
+
+        /// <summary>
+        /// Method which calculates a differential equation system with several specified methods.
+        /// </summary>
+        /// <param name="calculationTypes">List of calculation types which the system is supposed to be calculated with</param>
+        /// <param name="results">Container where results will be saved</param>
+        /// <param name="variablesAtAllSteps">Container of variables at each calculation step for all methods</param>
+        /// <param name="async">Flag which specifies if it is calculated in parallel mode</param>
+        /// <returns>Containier with calculation time</returns>
+        public Dictionary<CalculationTypeNames, double> CalculateWithGroupOfMethodsSync(List<CalculationTypeNames> calculationTypes, out Dictionary<CalculationTypeNames,
+            List<InitVariable>> results, Dictionary<CalculationTypeNames, List<List<InitVariable>>> variablesAtAllSteps = null, bool async = false)
+        {
+            results = new Dictionary<CalculationTypeNames, List<InitVariable>>();
+            Dictionary<CalculationTypeNames, double> timeResults = new Dictionary<CalculationTypeNames, double>();
+            
+            // Checking the correctness of input variables
+            DifferentialEquationSystem.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
+
+            List<List<InitVariable>> variablesForEachMethod = null; 
+            if (variablesAtAllSteps != null)
+            {
+                variablesForEachMethod = new List<List<InitVariable>>();
+            }
+
+            foreach(CalculationTypeNames calculationType in calculationTypes)
+            {
+                Func<List<List<InitVariable>>, List<InitVariable>> F = this.DefineSuitableMethod(calculationType, async);
+
+                List<InitVariable> methodResults;
+
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                methodResults = F(variablesForEachMethod);
+                stopwatch.Stop();
+
+                results.Add(calculationType, methodResults);
+                timeResults.Add(calculationType, stopwatch.ElapsedMilliseconds / 1000.0);
+
+                if (variablesAtAllSteps != null)
+                {
+                    variablesAtAllSteps.Add(calculationType, variablesForEachMethod);
+                }
+            }
+
+            return timeResults;
+        }
+
+        /// <summary>
+        /// Method which calculates a differential equation system with several specified methods in async mode
+        /// </summary>
+        /// <param name="calculationTypes">List of calculation types which the system is supposed to be calculated with</param>
+        /// <param name="results">Container where results will be saved</param>
+        /// <param name="variablesAtAllSteps">Container of variables at each calculation step for all methods</param>
+        /// <param name="async">Flag which specifies if it is calculated in parallel mode</param>
+        /// <returns>Containier with calculation time</returns>
+        public async Task<Dictionary<CalculationTypeNames, double>> CalculatewithGroupOfMethodsAsync(List<CalculationTypeNames> calculationTypes, Dictionary<CalculationTypeNames,
+            List<InitVariable>> results, Dictionary<CalculationTypeNames, List<List<InitVariable>>> variablesAtAllSteps = null, bool async = false)
+        {
+            var timeResults = new Dictionary<CalculationTypeNames, double>();
+
+            var calcTimes = new ConcurrentDictionary<CalculationTypeNames, double>();
+            var calcResults = new ConcurrentDictionary<CalculationTypeNames, List<InitVariable>>();
+
+            ConcurrentDictionary<CalculationTypeNames, List<List<InitVariable>>> calcVariablesAtAllSteps = null;
+            if (variablesAtAllSteps != null)
+            {
+                calcVariablesAtAllSteps = new ConcurrentDictionary<CalculationTypeNames, List<List<InitVariable>>>();
+            }
+
+            calcTimes = await this.CalculateForMethodGroupAsync(calculationTypes, calcResults, calcVariablesAtAllSteps, async);
+
+            timeResults = new Dictionary<CalculationTypeNames, double>(calcTimes);
+
+            foreach(var item in calcResults)
+            {
+                results.Add(item.Key, item.Value);
+            }
+
+            foreach (var item in calcVariablesAtAllSteps)
+            {
+                variablesAtAllSteps.Add(item.Key, item.Value);
+            }
+
+            return timeResults;
+        }
+
+        private async Task<ConcurrentDictionary<CalculationTypeNames, double>> CalculateForMethodGroupAsync(List<CalculationTypeNames> calculationTypes, ConcurrentDictionary<CalculationTypeNames,
+            List<InitVariable>> results, ConcurrentDictionary<CalculationTypeNames, List<List<InitVariable>>> variablesAtAllSteps = null, bool async = false)
+        {
+            ConcurrentDictionary<CalculationTypeNames, double> timeResults = new ConcurrentDictionary<CalculationTypeNames, double>();
+
+            // Checking the correctness of input variables
+            DifferentialEquationSystem.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
+
+            List<Task> calculationTasks = new List<Task>();
+
+            foreach (CalculationTypeNames calculationType in calculationTypes)
+            {
+                Func<List<List<InitVariable>>, List<InitVariable>> F = this.DefineSuitableMethod(calculationType, async);
+
+                Task calculationTask = new Task(() =>
+                {
+                    Stopwatch stopwatch = new Stopwatch();
+                    List<InitVariable> localResult;
+                    List<List<InitVariable>> variablesAtAllStepsForMethod = new List<List<InitVariable>>();
+
+                    stopwatch.Start();
+                    localResult = F(variablesAtAllStepsForMethod);
+                    stopwatch.Stop();
+
+                    results.TryAdd(calculationType, localResult);
+                    timeResults.TryAdd(calculationType, stopwatch.ElapsedMilliseconds / 1000.0);
+
+                    if (variablesAtAllSteps != null)
+                    {
+                        variablesAtAllSteps.TryAdd(calculationType, variablesAtAllStepsForMethod);
+                    }
+                });
+
+                calculationTask.Start();
+                calculationTasks.Add(calculationTask);
+            }
+
+            await Task.WhenAll(calculationTasks);
+
+            return timeResults;
         }
     }
 }

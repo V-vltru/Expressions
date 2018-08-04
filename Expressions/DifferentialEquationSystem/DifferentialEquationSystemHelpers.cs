@@ -5,7 +5,7 @@
     using Expressions;
     using Expressions.Models;
 
-    public static class DifferentialEquationSystemHelpers
+    public partial class DifferentialEquationSystem
     {
         /// <summary>
         /// Method converts List<InitVariable> items to List<Variable> items
@@ -147,7 +147,7 @@
             {
                 // Copying of the initial left variables to the separate list which when is going to "variablesAtAllStep" containier
                 List<InitVariable> initLeftVariables = new List<InitVariable>();
-                DifferentialEquationSystemHelpers.CopyVariables(leftVariables, initLeftVariables);
+                DifferentialEquationSystem.CopyVariables(leftVariables, initLeftVariables);
 
                 // Current time is also required to be saved in the intermediate vlues
                 initLeftVariables.Add(new InitVariable(currentTime));
@@ -176,6 +176,48 @@
 
             allVars.Add(time);
             return allVars;
+        }
+
+        /// <summary>
+        /// Method Identifies a correct method for Differential equation system calculation
+        /// </summary>
+        /// <param name="calculationType">Method name</param>
+        /// <param name="async">Flag which signals whether the calculation is executed in parallel mode</param>
+        /// <returns>A correct method for Differential equation system calculation</returns>
+        private Func<List<List<InitVariable>>, List<InitVariable>> DefineSuitableMethod(CalculationTypeNames calculationType, bool async)
+        {
+            if (async)
+            {
+                switch (calculationType)
+                {
+                    case CalculationTypeNames.Euler: return this.EulerAsync;
+                    case CalculationTypeNames.ForecastCorrection: return this.ForecastCorrectionAsync;
+                    case CalculationTypeNames.RK2: return this.RK2Async;
+                    case CalculationTypeNames.RK4: return this.RK4Async;
+                    case CalculationTypeNames.AdamsExtrapolationOne: return this.AdamsExtrapolationOneAsync;
+                    case CalculationTypeNames.AdamsExtrapolationTwo: return this.AdamsExtrapolationTwoAsync;
+                    case CalculationTypeNames.AdamsExtrapolationThree: return this.AdamsExtrapolationThreeAsync;
+                    case CalculationTypeNames.AdamsExtrapolationFour: return this.AdamsExtrapolationFourAsync;
+                    case CalculationTypeNames.Miln: return this.MilnAsync;
+                    default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
+                }
+            }
+            else
+            {
+                switch (calculationType)
+                {
+                    case CalculationTypeNames.Euler: return this.EulerSync;
+                    case CalculationTypeNames.ForecastCorrection: return this.ForecastCorrectionSync;
+                    case CalculationTypeNames.RK2: return this.RK2Sync;
+                    case CalculationTypeNames.RK4: return this.RK4Sync;
+                    case CalculationTypeNames.AdamsExtrapolationOne: return this.AdamsExtrapolationOneSync;
+                    case CalculationTypeNames.AdamsExtrapolationTwo: return this.AdamsExtrapolationTwoSync;
+                    case CalculationTypeNames.AdamsExtrapolationThree: return this.AdamsExtrapolationThreeSync;
+                    case CalculationTypeNames.AdamsExtrapolationFour: return this.AdamsExtrapolationFourSync;
+                    case CalculationTypeNames.Miln: return this.MilnSync;
+                    default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
+                }
+            }
         }
     }
 }
