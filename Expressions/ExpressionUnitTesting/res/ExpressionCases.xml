@@ -3,11 +3,11 @@
   <Expression id ="0">
     <Value>(a + b) * c</Value>
     <Parameters>
-      <Parameter Name ="a" Value ="1" />
+      <Parameter Name ="a" Value ="1.2" />
       <Parameter Name ="b" Value ="3" />
-      <Parameter Name ="c" Value ="2" />
+      <Parameter Name ="c" Value ="2,1" />
     </Parameters>
-    <Result>8</Result>
+    <Result>8.82</Result>
   </Expression>
   <Expression id ="1">
     <Value>(a - b) * c</Value>
