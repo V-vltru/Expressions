@@ -45,8 +45,7 @@
 
             // Calculation
             List<Variable> firstLeftVariables;
-            List<InitVariable> bufer;
-            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out bufer);
+            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out List<InitVariable> bufer);
             firstLeftVariables = DifferentialEquationSystem.ConvertInitVariablesToVariables(bufer);
 
             // Save the second variables calculated with Euler method
@@ -142,8 +141,7 @@
 
             // Calculation
             List<Variable> firstLeftVariables;
-            List<InitVariable> bufer;
-            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out bufer);
+            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out List<InitVariable> bufer);
             firstLeftVariables = DifferentialEquationSystem.ConvertInitVariablesToVariables(bufer);
 
             // Save the second variables calculated with Euler method
