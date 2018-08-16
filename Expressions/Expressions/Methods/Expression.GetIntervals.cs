@@ -18,22 +18,22 @@
             int idxTo = -1;
             int bracketBalance = 0;
 
-            for (int i = 0; i < expression.Length; i++)
+            for (int expressionIndex = 0; expressionIndex < expression.Length; expressionIndex++)
             {
-                if (expression[i] == '(')
+                if (expression[expressionIndex] == '(')
                 {
                     bracketBalance++;
                     if (idxFrom == -1)
                     {
-                        idxFrom = i;
+                        idxFrom = expressionIndex;
                     }
                 }
-                else if (expression[i] == ')')
+                else if (expression[expressionIndex] == ')')
                 {
                     bracketBalance--;
                     if (bracketBalance == 0)
                     {
-                        idxTo = i;
+                        idxTo = expressionIndex;
                     }
                 }
 

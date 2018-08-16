@@ -20,13 +20,13 @@
             operators.AddRange(operatorNames);
 
             int bBalance = 0;
-            for (int i = 0; i < expression.Length; i++)
+            for (int expressionIndex = 0; expressionIndex < expression.Length; expressionIndex++)
             {
-                if (expression[i] == '(')
+                if (expression[expressionIndex] == '(')
                 {
                     bBalance++;
                 }
-                else if (expression[i] == ')')
+                else if (expression[expressionIndex] == ')')
                 {
                     bBalance--;
                     if (bBalance < 0)
@@ -38,9 +38,9 @@
                 {
                     if (bBalance == 0)
                     {
-                        if (operators.Contains(expression[i]))
+                        if (operators.Contains(expression[expressionIndex]))
                         {
-                            result.Add(new Operator(i, expression[i]));
+                            result.Add(new Operator(expressionIndex, expression[expressionIndex]));
                         }
                     }
                 }
