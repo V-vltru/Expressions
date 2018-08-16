@@ -1,30 +1,21 @@
-﻿namespace DifferentialEquationSystem.Reporting
+﻿namespace DifferentialEquationSystem
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.Runtime.InteropServices;
     using Excel = Microsoft.Office.Interop.Excel;
 
-    public static class Reporting
+    public partial class DifferentialEquationSystem
     {
         /// <summary>
         /// Generates the excel report for 
         /// </summary>
-        /// <param name="differentialEquationSystem"></param>
-        /// <param name="leftVariables"></param>
-        /// <param name="constants"></param>
-        /// <param name="timeVariable"></param>
-        /// <param name="tEnd"></param>
-        /// <param name="tau"></param>
         /// <param name="calculationTypes"></param>
         /// <param name="times"></param>
         /// <param name="results"></param>
         /// <param name="allVariables"></param>
         /// <param name="excelPath"></param>
-        public static void GenerateExcelReport(List<string> differentialEquationSystem, List<InitVariable> leftVariables, List<InitVariable> constants, InitVariable timeVariable, 
-            double tEnd, double tau, List<CalculationTypeNames> calculationTypes, Dictionary<CalculationTypeNames, double> times, Dictionary<CalculationTypeNames, List<InitVariable>> results,
+        public void GenerateExcelReport(List<CalculationTypeNames> calculationTypes, Dictionary<CalculationTypeNames, double> times, Dictionary<CalculationTypeNames, List<InitVariable>> results,
                 Dictionary<CalculationTypeNames, List<List<InitVariable>>> allVariables, string excelPath)
         {
             Excel.Application xlApp = new Excel.Application();
@@ -34,8 +25,47 @@
             }
 
             Excel.Workbook xlWorkbook = xlApp.Workbooks.Add();
-            Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkbook.Worksheets.get_Item(1);
-            throw new NotImplementedException();
+
+            // Adding variables per each steps
+            for (int i = calculationTypes.Count - 1; i >= 0; i--)
+            {            
+                Excel.Worksheet itemWorkSheet = (Excel.Worksheet)xlWorkbook.Worksheets.Add();
+                SetCalculationResults(itemWorkSheet, calculationTypes[i], results[calculationTypes[i]], allVariables[calculationTypes[i]], times[calculationTypes[i]]);             
+            }
+
+            Excel.Worksheet commonResultsWorksheet = (Excel.Worksheet)xlWorkbook.Worksheets.Add();
+            SetCommonResults(commonResultsWorksheet, times, results);
+            Excel.Worksheet initialXlWorkSheet = (Excel.Worksheet)xlWorkbook.Worksheets.Add();
+            SetInitalSheet(initialXlWorkSheet, calculationTypes);
+
+            xlWorkbook.SaveAs("csharp-Excel.xls", Excel.XlFileFormat.xlWorkbookNormal);                   
+            xlWorkbook.Close();
+            xlApp.Quit();
+
+            Marshal.ReleaseComObject(initialXlWorkSheet);
+            Marshal.ReleaseComObject(xlWorkbook);
+            Marshal.ReleaseComObject(xlApp);
+        }
+
+        /// <summary>
+        /// Method gets column name by its index
+        /// </summary>
+        /// <param name="columnNumber">Number of a column</param>
+        /// <returns>Column name</returns>
+        private static string GetExcelColumnName(int columnNumber)
+        {
+            int dividend = columnNumber;
+            string columnName = String.Empty;
+            int modulo;
+
+            while (dividend > 0)
+            {
+                modulo = (dividend - 1) % 26;
+                columnName = Convert.ToChar(65 + modulo).ToString() + columnName;
+                dividend = (int)((dividend - modulo) / 26);
+            }
+
+            return columnName;
         }
     }
 }
