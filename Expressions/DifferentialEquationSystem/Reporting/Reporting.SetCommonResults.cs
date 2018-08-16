@@ -50,7 +50,7 @@
             worksheet.Cells[rowIndex, columnIndex] = "Time results";
             rowIndex++;
 
-            i = 0;
+            i = 0;           
             foreach(KeyValuePair<CalculationTypeNames, double> calculationTime in calculationTimes)
             {
                 worksheet.Cells[rowIndex, columnIndex + i] = calculationTime.Key.ToString();
@@ -58,6 +58,20 @@
 
                 i++;
             }
+
+            string leftTopTimeChart = GetExcelColumnName(1) + rowIndex.ToString();
+            string rightDownTimeChart = GetExcelColumnName(calculationTimes.Count) + (rowIndex + 1).ToString();
+
+            Excel.Range chartRange;
+            Excel.ChartObjects xlCharts = (Excel.ChartObjects)worksheet.ChartObjects(Type.Missing);
+            Excel.ChartObject mychart = xlCharts.Add(10, 80, 500, 450);
+            Excel.Chart chartPage = mychart.Chart;
+
+            chartRange = worksheet.get_Range(leftTopTimeChart, rightDownTimeChart);
+            chartPage.SetSourceData(chartRange);
+            chartPage.ChartType = Excel.XlChartType.xl3DColumnClustered;
+
+            chartPage.SeriesCollection(1).Name = "Calculation times";
         }
     }
 }
