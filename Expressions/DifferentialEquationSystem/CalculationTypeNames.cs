@@ -1,6 +1,6 @@
 ﻿namespace DifferentialEquationSystem
 {
-    public enum CalculationTypeNames
+    public enum CalculationTypeName
     {
         Euler,
         EulerAsyc,

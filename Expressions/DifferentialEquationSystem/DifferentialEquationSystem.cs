@@ -157,7 +157,7 @@
         /// <param name="variablesAtAllStep">Container of variables at each calculation step</param>
         /// <param name="async">Flag which specifies if it is calculated in parallel mode</param>
         /// <returns>Calculation time</returns>
-        public double Calculate(CalculationTypeNames calculationType, out List<InitVariable> results, List<List<InitVariable>> variablesAtAllStep = null)
+        public double Calculate(CalculationTypeName calculationType, out List<InitVariable> results, List<List<InitVariable>> variablesAtAllStep = null)
         {
             // Checking the correctness of input variables
             DifferentialEquationSystem.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
@@ -180,11 +180,11 @@
         /// <param name="variablesAtAllSteps">Container of variables at each calculation step for all methods</param>
         /// <param name="async">Flag which specifies if it is calculated in parallel mode</param>
         /// <returns>Containier with calculation time</returns>
-        public Dictionary<CalculationTypeNames, double> CalculateWithGroupOfMethodsSync(List<CalculationTypeNames> calculationTypes, out Dictionary<CalculationTypeNames,
-            List<InitVariable>> results, Dictionary<CalculationTypeNames, List<List<InitVariable>>> variablesAtAllSteps = null)
+        public Dictionary<CalculationTypeName, double> CalculateWithGroupOfMethodsSync(List<CalculationTypeName> calculationTypes, out Dictionary<CalculationTypeName,
+            List<InitVariable>> results, Dictionary<CalculationTypeName, List<List<InitVariable>>> variablesAtAllSteps = null)
         {
-            results = new Dictionary<CalculationTypeNames, List<InitVariable>>();
-            Dictionary<CalculationTypeNames, double> timeResults = new Dictionary<CalculationTypeNames, double>();
+            results = new Dictionary<CalculationTypeName, List<InitVariable>>();
+            Dictionary<CalculationTypeName, double> timeResults = new Dictionary<CalculationTypeName, double>();
             
             // Checking the correctness of input variables
             DifferentialEquationSystem.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
@@ -195,7 +195,7 @@
                 variablesForEachMethod = new List<List<InitVariable>>();
             }
 
-            foreach(CalculationTypeNames calculationType in calculationTypes)
+            foreach(CalculationTypeName calculationType in calculationTypes)
             {
                 Func<List<List<InitVariable>>, List<InitVariable>> F = this.DefineSuitableMethod(calculationType);
 
@@ -226,23 +226,23 @@
         /// <param name="variablesAtAllSteps">Container of variables at each calculation step for all methods</param>
         /// <param name="async">Flag which specifies if it is calculated in parallel mode</param>
         /// <returns>Containier with calculation time</returns>
-        public async Task<Dictionary<CalculationTypeNames, double>> CalculatewithGroupOfMethodsAsync(List<CalculationTypeNames> calculationTypes, Dictionary<CalculationTypeNames,
-            List<InitVariable>> results, Dictionary<CalculationTypeNames, List<List<InitVariable>>> variablesAtAllSteps = null)
+        public async Task<Dictionary<CalculationTypeName, double>> CalculatewithGroupOfMethodsAsync(List<CalculationTypeName> calculationTypes, Dictionary<CalculationTypeName,
+            List<InitVariable>> results, Dictionary<CalculationTypeName, List<List<InitVariable>>> variablesAtAllSteps = null)
         {
-            var timeResults = new Dictionary<CalculationTypeNames, double>();
+            var timeResults = new Dictionary<CalculationTypeName, double>();
 
-            var calcTimes = new ConcurrentDictionary<CalculationTypeNames, double>();
-            var calcResults = new ConcurrentDictionary<CalculationTypeNames, List<InitVariable>>();
+            var calcTimes = new ConcurrentDictionary<CalculationTypeName, double>();
+            var calcResults = new ConcurrentDictionary<CalculationTypeName, List<InitVariable>>();
 
-            ConcurrentDictionary<CalculationTypeNames, List<List<InitVariable>>> calcVariablesAtAllSteps = null;
+            ConcurrentDictionary<CalculationTypeName, List<List<InitVariable>>> calcVariablesAtAllSteps = null;
             if (variablesAtAllSteps != null)
             {
-                calcVariablesAtAllSteps = new ConcurrentDictionary<CalculationTypeNames, List<List<InitVariable>>>();
+                calcVariablesAtAllSteps = new ConcurrentDictionary<CalculationTypeName, List<List<InitVariable>>>();
             }
 
             calcTimes = await this.CalculateForMethodGroupAsync(calculationTypes, calcResults, calcVariablesAtAllSteps);
 
-            timeResults = new Dictionary<CalculationTypeNames, double>(calcTimes);
+            timeResults = new Dictionary<CalculationTypeName, double>(calcTimes);
 
             foreach(var item in calcResults)
             {
@@ -257,17 +257,17 @@
             return timeResults;
         }
 
-        private async Task<ConcurrentDictionary<CalculationTypeNames, double>> CalculateForMethodGroupAsync(List<CalculationTypeNames> calculationTypes, ConcurrentDictionary<CalculationTypeNames,
-            List<InitVariable>> results, ConcurrentDictionary<CalculationTypeNames, List<List<InitVariable>>> variablesAtAllSteps = null, bool async = false)
+        private async Task<ConcurrentDictionary<CalculationTypeName, double>> CalculateForMethodGroupAsync(List<CalculationTypeName> calculationTypes, ConcurrentDictionary<CalculationTypeName,
+            List<InitVariable>> results, ConcurrentDictionary<CalculationTypeName, List<List<InitVariable>>> variablesAtAllSteps = null, bool async = false)
         {
-            ConcurrentDictionary<CalculationTypeNames, double> timeResults = new ConcurrentDictionary<CalculationTypeNames, double>();
+            ConcurrentDictionary<CalculationTypeName, double> timeResults = new ConcurrentDictionary<CalculationTypeName, double>();
 
             // Checking the correctness of input variables
             DifferentialEquationSystem.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
 
             List<Task> calculationTasks = new List<Task>();
 
-            foreach (CalculationTypeNames calculationType in calculationTypes)
+            foreach (CalculationTypeName calculationType in calculationTypes)
             {
                 Func<List<List<InitVariable>>, List<InitVariable>> F = this.DefineSuitableMethod(calculationType);
 

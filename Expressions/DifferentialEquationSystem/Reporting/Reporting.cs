@@ -8,15 +8,15 @@
     public partial class DifferentialEquationSystem
     {
         /// <summary>
-        /// Generates the excel report for 
+        /// Generates the excel report for the results
         /// </summary>
-        /// <param name="calculationTypes"></param>
-        /// <param name="times"></param>
-        /// <param name="results"></param>
-        /// <param name="allVariables"></param>
-        /// <param name="excelPath"></param>
-        public void GenerateExcelReport(List<CalculationTypeNames> calculationTypes, Dictionary<CalculationTypeNames, double> times, Dictionary<CalculationTypeNames, List<InitVariable>> results,
-                Dictionary<CalculationTypeNames, List<List<InitVariable>>> allVariables, string excelPath)
+        /// <param name="calculationTypes">List of calculation types for which it is required to generate a report</param>
+        /// <param name="times">Calculation times for each calculation method</param>
+        /// <param name="results">Results for each calculation method</param>
+        /// <param name="allVariables">All variables results for each step of each calculation type</param>
+        /// <param name="excelPath">A path, where the report document is supposed to be saved</param>
+        public void GenerateExcelReport(List<CalculationTypeName> calculationTypes, Dictionary<CalculationTypeName, double> times, Dictionary<CalculationTypeName, List<InitVariable>> results,
+                Dictionary<CalculationTypeName, List<List<InitVariable>>> allVariables, string excelPath)
         {
             Excel.Application xlApp = new Excel.Application();
             if (xlApp == null)
@@ -33,12 +33,17 @@
                 SetCalculationResults(itemWorkSheet, calculationTypes[i], results[calculationTypes[i]], allVariables[calculationTypes[i]], times[calculationTypes[i]]);             
             }
 
-            Excel.Worksheet commonResultsWorksheet = (Excel.Worksheet)xlWorkbook.Worksheets.Add();
-            SetCommonResults(commonResultsWorksheet, times, results);
+            // Generate common results when the amount of calculation times more than 1
+            if (calculationTypes.Count > 1)
+            {
+                Excel.Worksheet commonResultsWorksheet = (Excel.Worksheet)xlWorkbook.Worksheets.Add();
+                SetCommonResults(commonResultsWorksheet, times, results);
+            }
+
             Excel.Worksheet initialXlWorkSheet = (Excel.Worksheet)xlWorkbook.Worksheets.Add();
             SetInitalSheet(initialXlWorkSheet, calculationTypes);
 
-            xlWorkbook.SaveAs("csharp-Excel.xls", Excel.XlFileFormat.xlWorkbookNormal);                   
+            xlWorkbook.SaveAs(excelPath, Excel.XlFileFormat.xlWorkbookNormal);                   
             xlWorkbook.Close();
             xlApp.Quit();
 

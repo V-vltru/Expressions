@@ -44,7 +44,7 @@
                 this.TimeVariable, this.TimeVariable.Value + 3 * this.Tau, this.Tau);
             List<List<InitVariable>> firstVariables = new List<List<InitVariable>>();
 
-            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out List<InitVariable> bufer, firstVariables);
+            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<InitVariable> bufer, firstVariables);
 
             List<Variable> firstLeftVariables;
             List<Variable> secondLeftVariables;
@@ -171,7 +171,7 @@
                 this.TimeVariable, this.TimeVariable.Value + 3 * this.Tau, this.Tau);
             List<List<InitVariable>> firstVariables = new List<List<InitVariable>>();
 
-            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out List<InitVariable> bufer, firstVariables);
+            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<InitVariable> bufer, firstVariables);
 
             List<Variable> firstLeftVariables;
             List<Variable> secondLeftVariables;

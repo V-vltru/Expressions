@@ -184,37 +184,37 @@
         /// <param name="calculationType">Method name</param>
         /// <param name="async">Flag which signals whether the calculation is executed in parallel mode</param>
         /// <returns>A correct method for Differential equation system calculation</returns>
-        private Func<List<List<InitVariable>>, List<InitVariable>> DefineSuitableMethod(CalculationTypeNames calculationType)
+        private Func<List<List<InitVariable>>, List<InitVariable>> DefineSuitableMethod(CalculationTypeName calculationType)
         {
 
             switch (calculationType)
             {
-                case CalculationTypeNames.Euler: return this.EulerSync;
-                case CalculationTypeNames.EulerAsyc: return this.EulerAsync;
+                case CalculationTypeName.Euler: return this.EulerSync;
+                case CalculationTypeName.EulerAsyc: return this.EulerAsync;
 
-                case CalculationTypeNames.ForecastCorrection: return this.ForecastCorrectionSync;
-                case CalculationTypeNames.ForecastCorrectionAsync: return this.ForecastCorrectionAsync;
+                case CalculationTypeName.ForecastCorrection: return this.ForecastCorrectionSync;
+                case CalculationTypeName.ForecastCorrectionAsync: return this.ForecastCorrectionAsync;
 
-                case CalculationTypeNames.RK2: return this.RK2Sync;
-                case CalculationTypeNames.RK2Async: return this.RK2Async;
+                case CalculationTypeName.RK2: return this.RK2Sync;
+                case CalculationTypeName.RK2Async: return this.RK2Async;
 
-                case CalculationTypeNames.RK4: return this.RK4Sync;
-                case CalculationTypeNames.RK4Async: return this.RK4Async;
+                case CalculationTypeName.RK4: return this.RK4Sync;
+                case CalculationTypeName.RK4Async: return this.RK4Async;
 
-                case CalculationTypeNames.AdamsExtrapolationOne: return this.AdamsExtrapolationOneSync;
-                case CalculationTypeNames.AdamsExtrapolationOneAsync: return this.AdamsExtrapolationOneAsync;
+                case CalculationTypeName.AdamsExtrapolationOne: return this.AdamsExtrapolationOneSync;
+                case CalculationTypeName.AdamsExtrapolationOneAsync: return this.AdamsExtrapolationOneAsync;
 
-                case CalculationTypeNames.AdamsExtrapolationTwo: return this.AdamsExtrapolationTwoSync;
-                case CalculationTypeNames.AdamsExtrapolationTwoAsync: return this.AdamsExtrapolationTwoAsync;
+                case CalculationTypeName.AdamsExtrapolationTwo: return this.AdamsExtrapolationTwoSync;
+                case CalculationTypeName.AdamsExtrapolationTwoAsync: return this.AdamsExtrapolationTwoAsync;
 
-                case CalculationTypeNames.AdamsExtrapolationThree: return this.AdamsExtrapolationThreeSync;
-                case CalculationTypeNames.AdamsExtrapolationThreeAsync: return this.AdamsExtrapolationThreeAsync;
+                case CalculationTypeName.AdamsExtrapolationThree: return this.AdamsExtrapolationThreeSync;
+                case CalculationTypeName.AdamsExtrapolationThreeAsync: return this.AdamsExtrapolationThreeAsync;
 
-                case CalculationTypeNames.AdamsExtrapolationFour: return this.AdamsExtrapolationFourSync;
-                case CalculationTypeNames.AdamsExtrapolationFourAsync: return this.AdamsExtrapolationFourAsync;
+                case CalculationTypeName.AdamsExtrapolationFour: return this.AdamsExtrapolationFourSync;
+                case CalculationTypeName.AdamsExtrapolationFourAsync: return this.AdamsExtrapolationFourAsync;
 
-                case CalculationTypeNames.Miln: return this.MilnSync;
-                case CalculationTypeNames.MilnAsync: return this.MilnAsync;
+                case CalculationTypeName.Miln: return this.MilnSync;
+                case CalculationTypeName.MilnAsync: return this.MilnAsync;
 
                 default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
             }

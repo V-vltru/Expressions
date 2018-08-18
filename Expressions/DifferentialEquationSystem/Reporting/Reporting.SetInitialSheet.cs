@@ -9,7 +9,8 @@
         /// Method fills the Initial worksheet
         /// </summary>
         /// <param name="xlWorkSheet">Worksheet to fill content there</param>
-        private void SetInitalSheet(Excel.Worksheet xlWorkSheet, List<CalculationTypeNames> calculationTypes)
+        /// <param name="calculationTypes">List of calclaulation types</param>
+        private void SetInitalSheet(Excel.Worksheet xlWorkSheet, List<CalculationTypeName> calculationTypes)
         {
             xlWorkSheet.Name = "Intial parameters";
             int rowIndex = 1;

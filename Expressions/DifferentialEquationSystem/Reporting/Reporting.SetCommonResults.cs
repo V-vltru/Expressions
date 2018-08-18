@@ -6,8 +6,14 @@
 
     public partial class DifferentialEquationSystem
     {
-        public void SetCommonResults(Excel.Worksheet worksheet, Dictionary<CalculationTypeNames, double> calculationTimes, 
-            Dictionary<CalculationTypeNames, List<InitVariable>> results)
+        /// <summary>
+        /// Method sets the sheet with common results
+        /// </summary>
+        /// <param name="worksheet">Worksheet where the information will be saved</param>
+        /// <param name="calculationTimes">Time results for each calculation types</param>
+        /// <param name="results">results for each calculation types</param>
+        public void SetCommonResults(Excel.Worksheet worksheet, Dictionary<CalculationTypeName, double> calculationTimes, 
+            Dictionary<CalculationTypeName, List<InitVariable>> results)
         {
             worksheet.Name = "Common results";
             int rowIndex = 1;
@@ -18,7 +24,7 @@
 
             int i = 0;
             
-            foreach(KeyValuePair<CalculationTypeNames, List<InitVariable>> item in results)
+            foreach(KeyValuePair<CalculationTypeName, List<InitVariable>> item in results)
             {
                 int j = 0;
                 List<InitVariable> result;
@@ -51,7 +57,7 @@
             rowIndex++;
 
             i = 0;           
-            foreach(KeyValuePair<CalculationTypeNames, double> calculationTime in calculationTimes)
+            foreach(KeyValuePair<CalculationTypeName, double> calculationTime in calculationTimes)
             {
                 worksheet.Cells[rowIndex, columnIndex + i] = calculationTime.Key.ToString();
                 worksheet.Cells[rowIndex + 1, columnIndex + i] = calculationTime.Value;
