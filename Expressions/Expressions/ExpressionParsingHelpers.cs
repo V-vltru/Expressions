@@ -94,24 +94,24 @@
                 {
                     int bBalance = 1;
                     bool toContinue = false;
-                    for (int i = 1; i < expression.Length; i++)
+                    for (int expressionStringIndex = 1; expressionStringIndex < expression.Length; expressionStringIndex++)
                     {
-                        if (expression[i] == '(')
+                        if (expression[expressionStringIndex] == '(')
                         {
                             bBalance++;
                         }
-                        else if (expression[i] == ')')
+                        else if (expression[expressionStringIndex] == ')')
                         {
                             bBalance--;
 
-                            if (bBalance == 0 && i == expression.Length - 1)
+                            if (bBalance == 0 && expressionStringIndex == expression.Length - 1)
                             {
                                 expression = COPY(expression, 1, expression.Length - 2);
                                 toContinue = true;
                                 break;
                             }
 
-                            if (bBalance == 0 && i < expression.Length - 1)
+                            if (bBalance == 0 && expressionStringIndex < expression.Length - 1)
                             {
                                 toContinue = false;
                                 break;
@@ -155,9 +155,9 @@
             string result = string.Empty;
             StringBuilder stringBuilder = new StringBuilder();
 
-            for (int i = idxFrom; i <= idxTo; i++)
+            for (int sourceIndex = idxFrom; sourceIndex <= idxTo; sourceIndex++)
             {
-                stringBuilder.Append(source[i]);
+                stringBuilder.Append(source[sourceIndex]);
             }
 
             result = stringBuilder.ToString();

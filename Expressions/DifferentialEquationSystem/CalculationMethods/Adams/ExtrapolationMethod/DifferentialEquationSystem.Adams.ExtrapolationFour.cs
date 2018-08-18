@@ -43,9 +43,8 @@
             DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem(this.ExpressionSystem, this.LeftVariables, this.Constants,
                 this.TimeVariable, this.TimeVariable.Value + 4 * this.Tau, this.Tau);
             List<List<InitVariable>> firstVariables = new List<List<InitVariable>>();
-            List<InitVariable> bufer;
 
-            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out bufer, firstVariables);
+            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<InitVariable> bufer, firstVariables);
 
             List<Variable> firstLeftVariables;
             List<Variable> secondLeftVariables;
@@ -183,9 +182,8 @@
             DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem(this.ExpressionSystem, this.LeftVariables, this.Constants,
                 this.TimeVariable, this.TimeVariable.Value + 4 * this.Tau, this.Tau);
             List<List<InitVariable>> firstVariables = new List<List<InitVariable>>();
-            List<InitVariable> bufer;
 
-            differentialEquationSystem.Calculate(CalculationTypeNames.Euler, out bufer, firstVariables);
+            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<InitVariable> bufer, firstVariables);
 
             List<Variable> firstLeftVariables;
             List<Variable> secondLeftVariables;

@@ -96,10 +96,7 @@
             }
 
             do
-            {
-                // calculation time incrimentation
-                currentTime.Value += this.Tau;
-
+            {                
                 // Combinig of variables
                 allVars = DifferentialEquationSystem.CollectVariables(currentLeftVariables, this.Constants, currentTime);
 
@@ -117,6 +114,8 @@
                 // Next variables are becoming the current ones for the next iteration
                 DifferentialEquationSystem.CopyVariables(nextLeftVariables, currentLeftVariables);
 
+                // calculation time incrimentation
+                currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
             List<InitVariable> result = new List<InitVariable>();

@@ -100,7 +100,7 @@
         public static void CopyVariables(List<Variable> sourceVariables, List<Variable> destVariables)
         {
             destVariables.Clear();
-            foreach(Variable oneFromSource in sourceVariables)
+            foreach (Variable oneFromSource in sourceVariables)
             {
                 destVariables.Add(new Variable(oneFromSource));
             }
@@ -184,39 +184,39 @@
         /// <param name="calculationType">Method name</param>
         /// <param name="async">Flag which signals whether the calculation is executed in parallel mode</param>
         /// <returns>A correct method for Differential equation system calculation</returns>
-        private Func<List<List<InitVariable>>, List<InitVariable>> DefineSuitableMethod(CalculationTypeNames calculationType, bool async)
+        private Func<List<List<InitVariable>>, List<InitVariable>> DefineSuitableMethod(CalculationTypeName calculationType)
         {
-            if (async)
+
+            switch (calculationType)
             {
-                switch (calculationType)
-                {
-                    case CalculationTypeNames.Euler: return this.EulerAsync;
-                    case CalculationTypeNames.ForecastCorrection: return this.ForecastCorrectionAsync;
-                    case CalculationTypeNames.RK2: return this.RK2Async;
-                    case CalculationTypeNames.RK4: return this.RK4Async;
-                    case CalculationTypeNames.AdamsExtrapolationOne: return this.AdamsExtrapolationOneAsync;
-                    case CalculationTypeNames.AdamsExtrapolationTwo: return this.AdamsExtrapolationTwoAsync;
-                    case CalculationTypeNames.AdamsExtrapolationThree: return this.AdamsExtrapolationThreeAsync;
-                    case CalculationTypeNames.AdamsExtrapolationFour: return this.AdamsExtrapolationFourAsync;
-                    case CalculationTypeNames.Miln: return this.MilnAsync;
-                    default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
-                }
-            }
-            else
-            {
-                switch (calculationType)
-                {
-                    case CalculationTypeNames.Euler: return this.EulerSync;
-                    case CalculationTypeNames.ForecastCorrection: return this.ForecastCorrectionSync;
-                    case CalculationTypeNames.RK2: return this.RK2Sync;
-                    case CalculationTypeNames.RK4: return this.RK4Sync;
-                    case CalculationTypeNames.AdamsExtrapolationOne: return this.AdamsExtrapolationOneSync;
-                    case CalculationTypeNames.AdamsExtrapolationTwo: return this.AdamsExtrapolationTwoSync;
-                    case CalculationTypeNames.AdamsExtrapolationThree: return this.AdamsExtrapolationThreeSync;
-                    case CalculationTypeNames.AdamsExtrapolationFour: return this.AdamsExtrapolationFourSync;
-                    case CalculationTypeNames.Miln: return this.MilnSync;
-                    default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
-                }
+                case CalculationTypeName.Euler: return this.EulerSync;
+                case CalculationTypeName.EulerAsyc: return this.EulerAsync;
+
+                case CalculationTypeName.ForecastCorrection: return this.ForecastCorrectionSync;
+                case CalculationTypeName.ForecastCorrectionAsync: return this.ForecastCorrectionAsync;
+
+                case CalculationTypeName.RK2: return this.RK2Sync;
+                case CalculationTypeName.RK2Async: return this.RK2Async;
+
+                case CalculationTypeName.RK4: return this.RK4Sync;
+                case CalculationTypeName.RK4Async: return this.RK4Async;
+
+                case CalculationTypeName.AdamsExtrapolationOne: return this.AdamsExtrapolationOneSync;
+                case CalculationTypeName.AdamsExtrapolationOneAsync: return this.AdamsExtrapolationOneAsync;
+
+                case CalculationTypeName.AdamsExtrapolationTwo: return this.AdamsExtrapolationTwoSync;
+                case CalculationTypeName.AdamsExtrapolationTwoAsync: return this.AdamsExtrapolationTwoAsync;
+
+                case CalculationTypeName.AdamsExtrapolationThree: return this.AdamsExtrapolationThreeSync;
+                case CalculationTypeName.AdamsExtrapolationThreeAsync: return this.AdamsExtrapolationThreeAsync;
+
+                case CalculationTypeName.AdamsExtrapolationFour: return this.AdamsExtrapolationFourSync;
+                case CalculationTypeName.AdamsExtrapolationFourAsync: return this.AdamsExtrapolationFourAsync;
+
+                case CalculationTypeName.Miln: return this.MilnSync;
+                case CalculationTypeName.MilnAsync: return this.MilnAsync;
+
+                default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
             }
         }
     }
