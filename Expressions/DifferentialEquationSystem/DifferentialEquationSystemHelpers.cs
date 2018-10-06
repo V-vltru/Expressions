@@ -5,7 +5,7 @@
     using Expressions;
     using Expressions.Models;
 
-    public partial class DifferentialEquationSystem
+    public static class DifferentialEquationSystemHelpers
     {
         /// <summary>
         /// Method converts List<InitVariable> items to List<Variable> items
@@ -147,7 +147,7 @@
             {
                 // Copying of the initial left variables to the separate list which when is going to "variablesAtAllStep" containier
                 List<InitVariable> initLeftVariables = new List<InitVariable>();
-                DifferentialEquationSystem.CopyVariables(leftVariables, initLeftVariables);
+                CopyVariables(leftVariables, initLeftVariables);
 
                 // Current time is also required to be saved in the intermediate vlues
                 initLeftVariables.Add(new InitVariable(currentTime));
@@ -176,48 +176,6 @@
 
             allVars.Add(time);
             return allVars;
-        }
-
-        /// <summary>
-        /// Method Identifies a correct method for Differential equation system calculation
-        /// </summary>
-        /// <param name="calculationType">Method name</param>
-        /// <param name="async">Flag which signals whether the calculation is executed in parallel mode</param>
-        /// <returns>A correct method for Differential equation system calculation</returns>
-        private Func<List<List<InitVariable>>, List<InitVariable>> DefineSuitableMethod(CalculationTypeName calculationType)
-        {
-
-            switch (calculationType)
-            {
-                case CalculationTypeName.Euler: return this.EulerSync;
-                case CalculationTypeName.EulerAsyc: return this.EulerAsync;
-
-                case CalculationTypeName.ForecastCorrection: return this.ForecastCorrectionSync;
-                case CalculationTypeName.ForecastCorrectionAsync: return this.ForecastCorrectionAsync;
-
-                case CalculationTypeName.RK2: return this.RK2Sync;
-                case CalculationTypeName.RK2Async: return this.RK2Async;
-
-                case CalculationTypeName.RK4: return this.RK4Sync;
-                case CalculationTypeName.RK4Async: return this.RK4Async;
-
-                case CalculationTypeName.AdamsExtrapolationOne: return this.AdamsExtrapolationOneSync;
-                case CalculationTypeName.AdamsExtrapolationOneAsync: return this.AdamsExtrapolationOneAsync;
-
-                case CalculationTypeName.AdamsExtrapolationTwo: return this.AdamsExtrapolationTwoSync;
-                case CalculationTypeName.AdamsExtrapolationTwoAsync: return this.AdamsExtrapolationTwoAsync;
-
-                case CalculationTypeName.AdamsExtrapolationThree: return this.AdamsExtrapolationThreeSync;
-                case CalculationTypeName.AdamsExtrapolationThreeAsync: return this.AdamsExtrapolationThreeAsync;
-
-                case CalculationTypeName.AdamsExtrapolationFour: return this.AdamsExtrapolationFourSync;
-                case CalculationTypeName.AdamsExtrapolationFourAsync: return this.AdamsExtrapolationFourAsync;
-
-                case CalculationTypeName.Miln: return this.MilnSync;
-                case CalculationTypeName.MilnAsync: return this.MilnAsync;
-
-                default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
-            }
         }
     }
 }
