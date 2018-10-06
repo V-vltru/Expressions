@@ -100,7 +100,7 @@ namespace SystemTest
 
             Dictionary<CalculationTypeName, double> calcTimes = differentialEquationSystem.CalculateWithGroupOfMethodsSync(calculationTypes, out results, variablesAtAllSteps);
 
-            differentialEquationSystem.GenerateExcelReport(calculationTypes, calcTimes, results, variablesAtAllSteps, "csharp-Excel.xls");
+            Reporting.GenerateExcelReport(calculationTypes, calcTimes, results, variablesAtAllSteps, "csharp-Excel.xls", differentialEquationSystem);
             #endregion
         }
     }

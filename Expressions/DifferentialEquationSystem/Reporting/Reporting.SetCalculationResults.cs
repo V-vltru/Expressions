@@ -1,10 +1,11 @@
 ﻿namespace DifferentialEquationSystem
 {
+    using Expressions.Models;
     using System;
     using System.Collections.Generic;
     using Excel = Microsoft.Office.Interop.Excel;
 
-    public partial class DifferentialEquationSystem
+    public static partial class Reporting
     {
         /// <summary>
         /// Method fills the sheet with calculation results
@@ -14,8 +15,8 @@
         /// <param name="result">Container with result variables</param>
         /// <param name="allVariables">Cantainer with variables values for each time step</param>
         /// <param name="calcTime">Time reqiured for calculation</param>
-        public void SetCalculationResults(Excel.Worksheet worksheet, CalculationTypeName calculationTypeName, 
-            List<DEVariable> result, List<List<DEVariable>> allVariables, double calcTime)
+        public static void SetCalculationResults(Excel.Worksheet worksheet, CalculationTypeName calculationTypeName, 
+            List<Variable> leftVariables, List<DEVariable> result, List<List<DEVariable>> allVariables, double calcTime)
         {
             worksheet.Name = calculationTypeName.ToString();
             int rowIndex = 1;
@@ -75,9 +76,9 @@
 
                 chartPage.SeriesCollection(1).XValues = horizontalAlignmentRange;
 
-                for (int i = 0; i < this.LeftVariables.Count; i++)
+                for (int i = 0; i < leftVariables.Count; i++)
                 {
-                    chartPage.SeriesCollection(i + 1).Name = this.LeftVariables[i].Name;
+                    chartPage.SeriesCollection(i + 1).Name = leftVariables[i].Name;
                 }
             }
         }

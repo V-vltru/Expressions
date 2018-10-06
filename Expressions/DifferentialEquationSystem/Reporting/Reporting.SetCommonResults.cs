@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using Excel = Microsoft.Office.Interop.Excel;
 
-    public partial class DifferentialEquationSystem
+    public static partial class Reporting
     {
         /// <summary>
         /// Method sets the sheet with common results
@@ -12,7 +12,7 @@
         /// <param name="worksheet">Worksheet where the information will be saved</param>
         /// <param name="calculationTimes">Time results for each calculation types</param>
         /// <param name="results">results for each calculation types</param>
-        public void SetCommonResults(Excel.Worksheet worksheet, Dictionary<CalculationTypeName, double> calculationTimes, 
+        public static void SetCommonResults(Excel.Worksheet worksheet, Dictionary<CalculationTypeName, double> calculationTimes, 
             Dictionary<CalculationTypeName, List<DEVariable>> results)
         {
             worksheet.Name = "Common results";
