@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> AdamsExtrapolationTwoSync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<DEVariable> AdamsExtrapolationTwoSync(List<List<DEVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
             List<Variable> allVars;
@@ -40,9 +40,9 @@
 
             DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem(this.ExpressionSystem, this.LeftVariables, this.Constants,
                 this.TimeVariable, this.TimeVariable.Value + 2 * this.Tau, this.Tau);
-            List<List<InitVariable>> firstVariables = new List<List<InitVariable>>();
+            List<List<DEVariable>> firstVariables = new List<List<DEVariable>>();
 
-            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<InitVariable> bufer, firstVariables);
+            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<DEVariable> bufer, firstVariables);
 
             List<Variable> firstLeftVariables;
             List<Variable> secondLeftVariables;
@@ -114,7 +114,7 @@
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
+            List<DEVariable> result = new List<DEVariable>();
             DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }
@@ -124,7 +124,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> AdamsExtrapolationTwoAsync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<DEVariable> AdamsExtrapolationTwoAsync(List<List<DEVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
             List<Variable> allVars;
@@ -153,9 +153,9 @@
 
             DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem(this.ExpressionSystem, this.LeftVariables, this.Constants,
                 this.TimeVariable, this.TimeVariable.Value + 2 * this.Tau, this.Tau);
-            List<List<InitVariable>> firstVariables = new List<List<InitVariable>>();
+            List<List<DEVariable>> firstVariables = new List<List<DEVariable>>();
 
-            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<InitVariable> bufer, firstVariables);
+            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<DEVariable> bufer, firstVariables);
 
             List<Variable> firstLeftVariables;
             List<Variable> secondLeftVariables;
@@ -228,7 +228,7 @@
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
+            List<DEVariable> result = new List<DEVariable>();
             DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }

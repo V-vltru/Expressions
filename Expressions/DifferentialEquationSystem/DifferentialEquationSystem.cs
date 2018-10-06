@@ -25,8 +25,8 @@
         /// <param name="timeVariable">Start time (presents in the expressions)</param>
         /// <param name="tEnd">End time</param>
         /// <param name="tau">Calculation step</param>
-        public DifferentialEquationSystem(List<string> expressions, List<InitVariable> leftVariables,
-            List<InitVariable> constants, InitVariable timeVariable, double tEnd, double tau)
+        public DifferentialEquationSystem(List<string> expressions, List<DEVariable> leftVariables,
+            List<DEVariable> constants, DEVariable timeVariable, double tEnd, double tau)
         {
             // Setting up of variables and constants
             if (leftVariables != null)
@@ -157,12 +157,12 @@
         /// <param name="variablesAtAllStep">Container of variables at each calculation step</param>
         /// <param name="async">Flag which specifies if it is calculated in parallel mode</param>
         /// <returns>Calculation time</returns>
-        public double Calculate(CalculationTypeName calculationType, out List<InitVariable> results, List<List<InitVariable>> variablesAtAllStep = null)
+        public double Calculate(CalculationTypeName calculationType, out List<DEVariable> results, List<List<DEVariable>> variablesAtAllStep = null)
         {
             // Checking the correctness of input variables
             DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
 
-            Func<List<List<InitVariable>>, List<InitVariable>> F = this.DefineSuitableMethod(calculationType);
+            Func<List<List<DEVariable>>, List<DEVariable>> F = this.DefineSuitableMethod(calculationType);
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -181,25 +181,25 @@
         /// <param name="async">Flag which specifies if it is calculated in parallel mode</param>
         /// <returns>Containier with calculation time</returns>
         public Dictionary<CalculationTypeName, double> CalculateWithGroupOfMethodsSync(List<CalculationTypeName> calculationTypes, out Dictionary<CalculationTypeName,
-            List<InitVariable>> results, Dictionary<CalculationTypeName, List<List<InitVariable>>> variablesAtAllSteps = null)
+            List<DEVariable>> results, Dictionary<CalculationTypeName, List<List<DEVariable>>> variablesAtAllSteps = null)
         {
-            results = new Dictionary<CalculationTypeName, List<InitVariable>>();
+            results = new Dictionary<CalculationTypeName, List<DEVariable>>();
             Dictionary<CalculationTypeName, double> timeResults = new Dictionary<CalculationTypeName, double>();
 
             // Checking the correctness of input variables
             DifferentialEquationSystemHelpers.CheckVariables(this.ExpressionSystem, this.LeftVariables, this.TimeVariable, this.Tau, this.TEnd);
 
-            List<List<InitVariable>> variablesForEachMethod = null; 
+            List<List<DEVariable>> variablesForEachMethod = null; 
             if (variablesAtAllSteps != null)
             {
-                variablesForEachMethod = new List<List<InitVariable>>();
+                variablesForEachMethod = new List<List<DEVariable>>();
             }
 
             foreach(CalculationTypeName calculationType in calculationTypes)
             {
-                Func<List<List<InitVariable>>, List<InitVariable>> F = this.DefineSuitableMethod(calculationType);
+                Func<List<List<DEVariable>>, List<DEVariable>> F = this.DefineSuitableMethod(calculationType);
 
-                List<InitVariable> methodResults;
+                List<DEVariable> methodResults;
 
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
@@ -227,17 +227,17 @@
         /// <param name="async">Flag which specifies if it is calculated in parallel mode</param>
         /// <returns>Containier with calculation time</returns>
         public async Task<Dictionary<CalculationTypeName, double>> CalculatewithGroupOfMethodsAsync(List<CalculationTypeName> calculationTypes, Dictionary<CalculationTypeName,
-            List<InitVariable>> results, Dictionary<CalculationTypeName, List<List<InitVariable>>> variablesAtAllSteps = null)
+            List<DEVariable>> results, Dictionary<CalculationTypeName, List<List<DEVariable>>> variablesAtAllSteps = null)
         {
             var timeResults = new Dictionary<CalculationTypeName, double>();
 
             var calcTimes = new ConcurrentDictionary<CalculationTypeName, double>();
-            var calcResults = new ConcurrentDictionary<CalculationTypeName, List<InitVariable>>();
+            var calcResults = new ConcurrentDictionary<CalculationTypeName, List<DEVariable>>();
 
-            ConcurrentDictionary<CalculationTypeName, List<List<InitVariable>>> calcVariablesAtAllSteps = null;
+            ConcurrentDictionary<CalculationTypeName, List<List<DEVariable>>> calcVariablesAtAllSteps = null;
             if (variablesAtAllSteps != null)
             {
-                calcVariablesAtAllSteps = new ConcurrentDictionary<CalculationTypeName, List<List<InitVariable>>>();
+                calcVariablesAtAllSteps = new ConcurrentDictionary<CalculationTypeName, List<List<DEVariable>>>();
             }
 
             calcTimes = await this.CalculateForMethodGroupAsync(calculationTypes, calcResults, calcVariablesAtAllSteps);
@@ -258,7 +258,7 @@
         }
 
         private async Task<ConcurrentDictionary<CalculationTypeName, double>> CalculateForMethodGroupAsync(List<CalculationTypeName> calculationTypes, ConcurrentDictionary<CalculationTypeName,
-            List<InitVariable>> results, ConcurrentDictionary<CalculationTypeName, List<List<InitVariable>>> variablesAtAllSteps = null, bool async = false)
+            List<DEVariable>> results, ConcurrentDictionary<CalculationTypeName, List<List<DEVariable>>> variablesAtAllSteps = null, bool async = false)
         {
             ConcurrentDictionary<CalculationTypeName, double> timeResults = new ConcurrentDictionary<CalculationTypeName, double>();
 
@@ -269,13 +269,13 @@
 
             foreach (CalculationTypeName calculationType in calculationTypes)
             {
-                Func<List<List<InitVariable>>, List<InitVariable>> F = this.DefineSuitableMethod(calculationType);
+                Func<List<List<DEVariable>>, List<DEVariable>> F = this.DefineSuitableMethod(calculationType);
 
                 Task calculationTask = new Task(() =>
                 {
                     Stopwatch stopwatch = new Stopwatch();
-                    List<InitVariable> localResult;
-                    List<List<InitVariable>> variablesAtAllStepsForMethod = new List<List<InitVariable>>();
+                    List<DEVariable> localResult;
+                    List<List<DEVariable>> variablesAtAllStepsForMethod = new List<List<DEVariable>>();
 
                     stopwatch.Start();
                     localResult = F(variablesAtAllStepsForMethod);
@@ -305,7 +305,7 @@
         /// <param name="calculationType">Method name</param>
         /// <param name="async">Flag which signals whether the calculation is executed in parallel mode</param>
         /// <returns>A correct method for Differential equation system calculation</returns>
-        private Func<List<List<InitVariable>>, List<InitVariable>> DefineSuitableMethod(CalculationTypeName calculationType)
+        private Func<List<List<DEVariable>>, List<DEVariable>> DefineSuitableMethod(CalculationTypeName calculationType)
         {
 
             switch (calculationType)

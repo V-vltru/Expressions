@@ -13,7 +13,7 @@
         /// <param name="calculationTimes">Time results for each calculation types</param>
         /// <param name="results">results for each calculation types</param>
         public void SetCommonResults(Excel.Worksheet worksheet, Dictionary<CalculationTypeName, double> calculationTimes, 
-            Dictionary<CalculationTypeName, List<InitVariable>> results)
+            Dictionary<CalculationTypeName, List<DEVariable>> results)
         {
             worksheet.Name = "Common results";
             int rowIndex = 1;
@@ -24,15 +24,15 @@
 
             int i = 0;
             
-            foreach(KeyValuePair<CalculationTypeName, List<InitVariable>> item in results)
+            foreach(KeyValuePair<CalculationTypeName, List<DEVariable>> item in results)
             {
                 int j = 0;
-                List<InitVariable> result;
+                List<DEVariable> result;
 
                 if (i == 0)
                 {                
                     result = item.Value;
-                    foreach (InitVariable variable in result)
+                    foreach (DEVariable variable in result)
                     {
                         worksheet.Cells[rowIndex + j + 1, columnIndex] = variable.Name;
                         j++;
@@ -43,7 +43,7 @@
 
                 j = 0;
                 result = item.Value;
-                foreach (InitVariable variable in result)
+                foreach (DEVariable variable in result)
                 {
                     worksheet.Cells[rowIndex + 1 + j, columnIndex + i + 1] = variable.Value;
                     j++;

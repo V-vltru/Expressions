@@ -17,58 +17,58 @@ namespace SystemTest
                 "y1"
             };
 
-            List<InitVariable> leftVariables = new List<InitVariable>
+            List<DEVariable> leftVariables = new List<DEVariable>
             {
-                new InitVariable("y", 2),
-                new InitVariable("y1", 1),
+                new DEVariable("y", 2),
+                new DEVariable("y1", 1),
             };
 
-            InitVariable timeVariable = new InitVariable("time", 0);
+            DEVariable timeVariable = new DEVariable("time", 0);
 
             DifferentialEquationSystem.DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem.DifferentialEquationSystem(expressions, leftVariables, null, timeVariable, 1.5, 0.001);
-            List<List<InitVariable>> perTime = new List<List<InitVariable>>();
+            List<List<DEVariable>> perTime = new List<List<DEVariable>>();
             double calcTime = 0;
-            List<InitVariable> resultEuler;
+            List<DEVariable> resultEuler;
             calcTime = differentialEquationSystem.Calculate(CalculationTypeName.Euler, out resultEuler, perTime);
 
             double calcTimeForecast = 0;
-            List<List<InitVariable>> perTimeForecast = new List<List<InitVariable>>();
-            List<InitVariable> resultForecastCorrection;
+            List<List<DEVariable>> perTimeForecast = new List<List<DEVariable>>();
+            List<DEVariable> resultForecastCorrection;
             calcTimeForecast = differentialEquationSystem.Calculate(CalculationTypeName.ForecastCorrection, out resultForecastCorrection, perTimeForecast);
 
             double calcTimeRK2 = 0;
-            List<List<InitVariable>> perTimeRK2 = new List<List<InitVariable>>();
-            List<InitVariable> resultRK2;
+            List<List<DEVariable>> perTimeRK2 = new List<List<DEVariable>>();
+            List<DEVariable> resultRK2;
             calcTimeRK2 = differentialEquationSystem.Calculate(CalculationTypeName.RK2, out resultRK2, perTimeRK2);
 
             double calcTimeRK4 = 0;
-            List<List<InitVariable>> perTimeRK4 = new List<List<InitVariable>>();
-            List<InitVariable> resultRK4;
+            List<List<DEVariable>> perTimeRK4 = new List<List<DEVariable>>();
+            List<DEVariable> resultRK4;
             calcTimeRK4 = differentialEquationSystem.Calculate(CalculationTypeName.RK4, out resultRK4, perTimeRK4);
 
             double calcTimeAdams1 = 0;
-            List<List<InitVariable>> perTimeAdams1 = new List<List<InitVariable>>();
-            List<InitVariable> resultAdams1;
+            List<List<DEVariable>> perTimeAdams1 = new List<List<DEVariable>>();
+            List<DEVariable> resultAdams1;
             calcTimeAdams1 = differentialEquationSystem.Calculate(CalculationTypeName.AdamsExtrapolationOne, out resultAdams1, perTimeAdams1);
 
             double calcTimeAdams2 = 0;
-            List<List<InitVariable>> perTimeAdams2 = new List<List<InitVariable>>();
-            List<InitVariable> resultAdams2;
+            List<List<DEVariable>> perTimeAdams2 = new List<List<DEVariable>>();
+            List<DEVariable> resultAdams2;
             calcTimeAdams2 = differentialEquationSystem.Calculate(CalculationTypeName.AdamsExtrapolationTwo, out resultAdams2, perTimeAdams2);
 
             double calcTimeAdams3 = 0;
-            List<List<InitVariable>> perTimeAdams3 = new List<List<InitVariable>>();
-            List<InitVariable> resultAdams3;
+            List<List<DEVariable>> perTimeAdams3 = new List<List<DEVariable>>();
+            List<DEVariable> resultAdams3;
             calcTimeAdams3 = differentialEquationSystem.Calculate(CalculationTypeName.AdamsExtrapolationThree, out resultAdams3, perTimeAdams3);
 
             double calcTimeAdams4 = 0;
-            List<List<InitVariable>> perTimeAdams4 = new List<List<InitVariable>>();
-            List<InitVariable> resultAdams4;
+            List<List<DEVariable>> perTimeAdams4 = new List<List<DEVariable>>();
+            List<DEVariable> resultAdams4;
             calcTimeAdams4 = differentialEquationSystem.Calculate(CalculationTypeName.AdamsExtrapolationFour, out resultAdams4, perTimeAdams4);
 
             double calcTimeMiln = 0;
-            List<List<InitVariable>> perTimeMiln = new List<List<InitVariable>>();
-            List<InitVariable> resultMiln;
+            List<List<DEVariable>> perTimeMiln = new List<List<DEVariable>>();
+            List<DEVariable> resultMiln;
             calcTimeMiln = differentialEquationSystem.Calculate(CalculationTypeName.Miln, out resultMiln, perTimeMiln);
 
             #region CalculateWithGroupOfMethodsSync
@@ -95,8 +95,8 @@ namespace SystemTest
                 CalculationTypeName.MilnAsync
             };
 
-            Dictionary<CalculationTypeName, List<InitVariable>> results;
-            Dictionary<CalculationTypeName, List<List<InitVariable>>> variablesAtAllSteps = new Dictionary<CalculationTypeName, List<List<InitVariable>>>();
+            Dictionary<CalculationTypeName, List<DEVariable>> results;
+            Dictionary<CalculationTypeName, List<List<DEVariable>>> variablesAtAllSteps = new Dictionary<CalculationTypeName, List<List<DEVariable>>>();
 
             Dictionary<CalculationTypeName, double> calcTimes = differentialEquationSystem.CalculateWithGroupOfMethodsSync(calculationTypes, out results, variablesAtAllSteps);
 

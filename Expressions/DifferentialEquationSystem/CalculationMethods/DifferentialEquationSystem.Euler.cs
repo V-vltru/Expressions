@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> EulerSync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<DEVariable> EulerSync(List<List<DEVariable>> variablesAtAllStep = null)
         {
             // Put left variables, constants and time variable in the one containier
             List<Variable> allVars;
@@ -60,7 +60,7 @@
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
+            List<DEVariable> result = new List<DEVariable>();
             DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }
@@ -70,7 +70,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> EulerAsync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<DEVariable> EulerAsync(List<List<DEVariable>> variablesAtAllStep = null)
         {
             // Put left variables, constants and time variable in the one containier
             List<Variable> allVars;
@@ -118,7 +118,7 @@
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
+            List<DEVariable> result = new List<DEVariable>();
             DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }

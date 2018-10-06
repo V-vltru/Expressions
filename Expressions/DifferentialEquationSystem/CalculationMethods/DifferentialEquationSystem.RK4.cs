@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> RK4Sync(List<List<InitVariable>> variablesAtAllStep)
+        private List<DEVariable> RK4Sync(List<List<DEVariable>> variablesAtAllStep)
         {
             // Put left variables, constants and time variable in the one containier
             List<Variable> allVars;
@@ -119,7 +119,7 @@
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
+            List<DEVariable> result = new List<DEVariable>();
             DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }
@@ -129,7 +129,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> RK4Async(List<List<InitVariable>> variablesAtAllStep)
+        private List<DEVariable> RK4Async(List<List<DEVariable>> variablesAtAllStep)
         {
             // Put left variables, constants and time variable in the one containier
             List<Variable> allVars;
@@ -236,7 +236,7 @@
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
+            List<DEVariable> result = new List<DEVariable>();
             DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }

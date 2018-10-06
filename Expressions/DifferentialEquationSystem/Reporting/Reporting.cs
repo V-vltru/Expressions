@@ -15,8 +15,8 @@
         /// <param name="results">Results for each calculation method</param>
         /// <param name="allVariables">All variables results for each step of each calculation type</param>
         /// <param name="excelPath">A path, where the report document is supposed to be saved</param>
-        public void GenerateExcelReport(List<CalculationTypeName> calculationTypes, Dictionary<CalculationTypeName, double> times, Dictionary<CalculationTypeName, List<InitVariable>> results,
-                Dictionary<CalculationTypeName, List<List<InitVariable>>> allVariables, string excelPath)
+        public void GenerateExcelReport(List<CalculationTypeName> calculationTypes, Dictionary<CalculationTypeName, double> times, Dictionary<CalculationTypeName, List<DEVariable>> results,
+                Dictionary<CalculationTypeName, List<List<DEVariable>>> allVariables, string excelPath)
         {
             Excel.Application xlApp = new Excel.Application();
             if (xlApp == null)

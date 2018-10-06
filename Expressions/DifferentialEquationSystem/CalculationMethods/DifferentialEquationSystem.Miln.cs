@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> MilnSync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<DEVariable> MilnSync(List<List<DEVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
 
@@ -44,8 +44,8 @@
 
             DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem(this.ExpressionSystem, this.LeftVariables, this.Constants,
                 this.TimeVariable, this.TimeVariable.Value + 3 * this.Tau, this.Tau);
-            List<List<InitVariable>> firstVariables = new List<List<InitVariable>>();
-            List<InitVariable> bufer;
+            List<List<DEVariable>> firstVariables = new List<List<DEVariable>>();
+            List<DEVariable> bufer;
 
             differentialEquationSystem.Calculate(CalculationTypeName.Euler, out bufer, firstVariables);
 
@@ -153,7 +153,7 @@
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
+            List<DEVariable> result = new List<DEVariable>();
             DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }
@@ -163,7 +163,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> MilnAsync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<DEVariable> MilnAsync(List<List<DEVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
 
@@ -196,8 +196,8 @@
 
             DifferentialEquationSystem differentialEquationSystem = new DifferentialEquationSystem(this.ExpressionSystem, this.LeftVariables, this.Constants,
                 this.TimeVariable, this.TimeVariable.Value + 3 * this.Tau, this.Tau);
-            List<List<InitVariable>> firstVariables = new List<List<InitVariable>>();
-            List<InitVariable> bufer;
+            List<List<DEVariable>> firstVariables = new List<List<DEVariable>>();
+            List<DEVariable> bufer;
 
             differentialEquationSystem.Calculate(CalculationTypeName.Euler, out bufer, firstVariables);
 
@@ -307,7 +307,7 @@
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
+            List<DEVariable> result = new List<DEVariable>();
             DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }

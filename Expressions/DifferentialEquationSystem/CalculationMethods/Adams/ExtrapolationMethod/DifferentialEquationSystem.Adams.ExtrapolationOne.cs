@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> AdamsExtrapolationOneSync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<DEVariable> AdamsExtrapolationOneSync(List<List<DEVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
             List<Variable> allVars;
@@ -45,7 +45,7 @@
 
             // Calculation
             List<Variable> firstLeftVariables;
-            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<InitVariable> bufer);
+            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<DEVariable> bufer);
             firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(bufer);
 
             // Save the second variables calculated with Euler method
@@ -97,7 +97,7 @@
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
+            List<DEVariable> result = new List<DEVariable>();
             DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }
@@ -107,7 +107,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> AdamsExtrapolationOneAsync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<DEVariable> AdamsExtrapolationOneAsync(List<List<DEVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
             List<Variable> allVars;
@@ -141,7 +141,7 @@
 
             // Calculation
             List<Variable> firstLeftVariables;
-            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<InitVariable> bufer);
+            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<DEVariable> bufer);
             firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(bufer);
 
             // Save the second variables calculated with Euler method
@@ -193,7 +193,7 @@
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
+            List<DEVariable> result = new List<DEVariable>();
             DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }
