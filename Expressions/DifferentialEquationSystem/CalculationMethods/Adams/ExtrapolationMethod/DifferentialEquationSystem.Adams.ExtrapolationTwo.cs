@@ -47,8 +47,8 @@
             List<Variable> firstLeftVariables;
             List<Variable> secondLeftVariables;
 
-            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(firstVariables[1]);
-            secondLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(firstVariables[2]);
+            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertDEVariablesToVariables(firstVariables[1]);
+            secondLeftVariables = DifferentialEquationSystemHelpers.ConvertDEVariablesToVariables(firstVariables[2]);
 
             firstLeftVariables.RemoveAt(firstLeftVariables.Count - 1);
             secondLeftVariables.RemoveAt(secondLeftVariables.Count - 1);
@@ -160,8 +160,8 @@
             List<Variable> firstLeftVariables;
             List<Variable> secondLeftVariables;
 
-            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(firstVariables[1]);
-            secondLeftVariables = DifferentialEquationSystemHelpers.ConvertInitVariablesToVariables(firstVariables[2]);
+            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertDEVariablesToVariables(firstVariables[1]);
+            secondLeftVariables = DifferentialEquationSystemHelpers.ConvertDEVariablesToVariables(firstVariables[2]);
 
             firstLeftVariables.RemoveAt(firstLeftVariables.Count - 1);
             secondLeftVariables.RemoveAt(secondLeftVariables.Count - 1);

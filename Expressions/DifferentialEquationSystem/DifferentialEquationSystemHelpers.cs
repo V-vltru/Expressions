@@ -12,7 +12,7 @@
         /// </summary>
         /// <param name="initVariables">Instance of List<InitVariable></param>
         /// <returns>List of Variables</returns>
-        public static List<Variable> ConvertInitVariablesToVariables(List<DEVariable> initVariables)
+        public static List<Variable> ConvertDEVariablesToVariables(List<DEVariable> initVariables)
         {
             List<Variable> result = new List<Variable>();
             foreach (DEVariable initVariable in initVariables)
@@ -28,7 +28,7 @@
         /// </summary>
         /// <param name="variables">Instance of List<InitVariable></param>
         /// <returns>List of Variables</returns>
-        public static List<DEVariable> ConvertVariableToInitVariable(List<Variable> variables)
+        public static List<DEVariable> ConvertVariableToDEVariable(List<Variable> variables)
         {
             List<DEVariable> result = new List<DEVariable>();
             foreach (Variable variable in variables)
