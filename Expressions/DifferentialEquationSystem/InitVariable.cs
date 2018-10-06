@@ -2,33 +2,33 @@
 {
     using Expressions.Models;
 
-    public class InitVariable
+    public class DEVariable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InitVariable" /> class.
+        /// Initializes a new instance of the <see cref="DEVariable" /> class.
         /// </summary>
         /// <param name="name">Name of the init variable</param>
         /// <param name="value">Value of init variable</param>
-        public InitVariable(string name, double value)
+        public DEVariable(string name, double value)
         {
             this.Name = name;
             this.Value = value;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InitVariable" /> class.
+        /// Initializes a new instance of the <see cref="DEVariable" /> class.
         /// </summary>
         /// <param name="initVariable">Initial variable which is supposed to be copied to the current one</param>
-        public InitVariable(InitVariable initVariable)
+        public DEVariable(DEVariable initVariable)
         {
             this.Name = initVariable.Name;
             this.Value = initVariable.Value;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InitVariable" /> class.
+        /// Initializes a new instance of the <see cref="DEVariable" /> class.
         /// </summary>
-        public InitVariable()
+        public DEVariable()
         {
         }
 
@@ -46,7 +46,7 @@
         /// Method implicitly converts InitVariable instance to the Variable one
         /// </summary>
         /// <param name="initVariable">InitVariable instance</param>
-        public static implicit operator Variable(InitVariable initVariable)
+        public static implicit operator Variable(DEVariable initVariable)
         {
             if (initVariable != null)
             {
@@ -64,11 +64,11 @@
         /// Method implicitly converts Variable instance to the InitVariable one
         /// </summary>
         /// <param name="variable">Variable instance</param>
-        public static implicit operator InitVariable(Variable variable)
+        public static implicit operator DEVariable(Variable variable)
         {
             if (variable != null)
             {
-                InitVariable result = new InitVariable(variable.Name, variable.Value);
+                DEVariable result = new DEVariable(variable.Name, variable.Value);
 
                 return result;
             }

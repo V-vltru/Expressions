@@ -1,11 +1,12 @@
 ﻿namespace DifferentialEquationSystem
 {
+    using Expressions;
     using System;
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
     using Excel = Microsoft.Office.Interop.Excel;
 
-    public partial class DifferentialEquationSystem
+    public static partial class Reporting
     {
         /// <summary>
         /// Generates the excel report for the results
@@ -15,8 +16,8 @@
         /// <param name="results">Results for each calculation method</param>
         /// <param name="allVariables">All variables results for each step of each calculation type</param>
         /// <param name="excelPath">A path, where the report document is supposed to be saved</param>
-        public void GenerateExcelReport(List<CalculationTypeName> calculationTypes, Dictionary<CalculationTypeName, double> times, Dictionary<CalculationTypeName, List<InitVariable>> results,
-                Dictionary<CalculationTypeName, List<List<InitVariable>>> allVariables, string excelPath)
+        public static void GenerateExcelReport(List<CalculationTypeName> calculationTypes, Dictionary<CalculationTypeName, double> times, Dictionary<CalculationTypeName, List<DEVariable>> results,
+                Dictionary<CalculationTypeName, List<List<DEVariable>>> allVariables, string excelPath, DifferentialEquationSystem differentialEquationSystem)
         {
             Excel.Application xlApp = new Excel.Application();
             if (xlApp == null)
@@ -30,7 +31,7 @@
             for (int i = calculationTypes.Count - 1; i >= 0; i--)
             {            
                 Excel.Worksheet itemWorkSheet = (Excel.Worksheet)xlWorkbook.Worksheets.Add();
-                SetCalculationResults(itemWorkSheet, calculationTypes[i], results[calculationTypes[i]], allVariables[calculationTypes[i]], times[calculationTypes[i]]);             
+                SetCalculationResults(itemWorkSheet, calculationTypes[i], differentialEquationSystem.LeftVariables, results[calculationTypes[i]], allVariables[calculationTypes[i]], times[calculationTypes[i]]);             
             }
 
             // Generate common results when the amount of calculation times more than 1
@@ -41,7 +42,8 @@
             }
 
             Excel.Worksheet initialXlWorkSheet = (Excel.Worksheet)xlWorkbook.Worksheets.Add();
-            SetInitalSheet(initialXlWorkSheet, calculationTypes);
+            SetInitalSheet(initialXlWorkSheet, calculationTypes,differentialEquationSystem.LeftVariables, differentialEquationSystem.TimeVariable,
+               differentialEquationSystem.Tau, differentialEquationSystem.TEnd, differentialEquationSystem.ExpressionSystem);
 
             xlWorkbook.SaveAs(excelPath, Excel.XlFileFormat.xlWorkbookNormal);                   
             xlWorkbook.Close();

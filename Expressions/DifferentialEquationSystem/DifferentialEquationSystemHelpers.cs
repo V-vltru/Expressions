@@ -5,17 +5,17 @@
     using Expressions;
     using Expressions.Models;
 
-    public partial class DifferentialEquationSystem
+    public static class DifferentialEquationSystemHelpers
     {
         /// <summary>
         /// Method converts List<InitVariable> items to List<Variable> items
         /// </summary>
         /// <param name="initVariables">Instance of List<InitVariable></param>
         /// <returns>List of Variables</returns>
-        public static List<Variable> ConvertInitVariablesToVariables(List<InitVariable> initVariables)
+        public static List<Variable> ConvertDEVariablesToVariables(List<DEVariable> initVariables)
         {
             List<Variable> result = new List<Variable>();
-            foreach (InitVariable initVariable in initVariables)
+            foreach (DEVariable initVariable in initVariables)
             {
                 result.Add(initVariable);
             }
@@ -28,9 +28,9 @@
         /// </summary>
         /// <param name="variables">Instance of List<InitVariable></param>
         /// <returns>List of Variables</returns>
-        public static List<InitVariable> ConvertVariableToInitVariable(List<Variable> variables)
+        public static List<DEVariable> ConvertVariableToDEVariable(List<Variable> variables)
         {
-            List<InitVariable> result = new List<InitVariable>();
+            List<DEVariable> result = new List<DEVariable>();
             foreach (Variable variable in variables)
             {
                 result.Add(variable);
@@ -106,30 +106,30 @@
             }
         }
 
-        public static void CopyVariables(List<InitVariable> sourceVariables, List<Variable> destVariables)
+        public static void CopyVariables(List<DEVariable> sourceVariables, List<Variable> destVariables)
         {
             destVariables.Clear();
-            foreach (InitVariable oneFromSource in sourceVariables)
+            foreach (DEVariable oneFromSource in sourceVariables)
             {
                 destVariables.Add(new Variable(oneFromSource));
             }
         }
 
-        public static void CopyVariables(List<Variable> sourceVariables, List<InitVariable> destVariables)
+        public static void CopyVariables(List<Variable> sourceVariables, List<DEVariable> destVariables)
         {
             destVariables.Clear();
             foreach (Variable oneFromSource in sourceVariables)
             {
-                destVariables.Add(new InitVariable(oneFromSource));
+                destVariables.Add(new DEVariable(oneFromSource));
             }
         }
 
-        public static void CopyVariables(List<InitVariable> sourceVariables, List<InitVariable> destVariables)
+        public static void CopyVariables(List<DEVariable> sourceVariables, List<DEVariable> destVariables)
         {
             destVariables.Clear();
-            foreach (InitVariable oneFromSource in sourceVariables)
+            foreach (DEVariable oneFromSource in sourceVariables)
             {
-                destVariables.Add(new InitVariable(oneFromSource));
+                destVariables.Add(new DEVariable(oneFromSource));
             }
         }
 
@@ -141,16 +141,16 @@
         /// <param name="statistics">Container where left variables for each time are saved</param>
         /// <param name="leftVariables">Current left variables</param>
         /// <param name="currentTime">Current time</param>
-        public static void SaveLeftVariableToStatistics(List<List<InitVariable>> statistics, List<Variable> leftVariables, Variable currentTime)
+        public static void SaveLeftVariableToStatistics(List<List<DEVariable>> statistics, List<Variable> leftVariables, Variable currentTime)
         {
             if (statistics != null)
             {
                 // Copying of the initial left variables to the separate list which when is going to "variablesAtAllStep" containier
-                List<InitVariable> initLeftVariables = new List<InitVariable>();
-                DifferentialEquationSystem.CopyVariables(leftVariables, initLeftVariables);
+                List<DEVariable> initLeftVariables = new List<DEVariable>();
+                CopyVariables(leftVariables, initLeftVariables);
 
                 // Current time is also required to be saved in the intermediate vlues
-                initLeftVariables.Add(new InitVariable(currentTime));
+                initLeftVariables.Add(new DEVariable(currentTime));
                 statistics.Add(initLeftVariables);
             }
         }
@@ -176,48 +176,6 @@
 
             allVars.Add(time);
             return allVars;
-        }
-
-        /// <summary>
-        /// Method Identifies a correct method for Differential equation system calculation
-        /// </summary>
-        /// <param name="calculationType">Method name</param>
-        /// <param name="async">Flag which signals whether the calculation is executed in parallel mode</param>
-        /// <returns>A correct method for Differential equation system calculation</returns>
-        private Func<List<List<InitVariable>>, List<InitVariable>> DefineSuitableMethod(CalculationTypeName calculationType)
-        {
-
-            switch (calculationType)
-            {
-                case CalculationTypeName.Euler: return this.EulerSync;
-                case CalculationTypeName.EulerAsyc: return this.EulerAsync;
-
-                case CalculationTypeName.ForecastCorrection: return this.ForecastCorrectionSync;
-                case CalculationTypeName.ForecastCorrectionAsync: return this.ForecastCorrectionAsync;
-
-                case CalculationTypeName.RK2: return this.RK2Sync;
-                case CalculationTypeName.RK2Async: return this.RK2Async;
-
-                case CalculationTypeName.RK4: return this.RK4Sync;
-                case CalculationTypeName.RK4Async: return this.RK4Async;
-
-                case CalculationTypeName.AdamsExtrapolationOne: return this.AdamsExtrapolationOneSync;
-                case CalculationTypeName.AdamsExtrapolationOneAsync: return this.AdamsExtrapolationOneAsync;
-
-                case CalculationTypeName.AdamsExtrapolationTwo: return this.AdamsExtrapolationTwoSync;
-                case CalculationTypeName.AdamsExtrapolationTwoAsync: return this.AdamsExtrapolationTwoAsync;
-
-                case CalculationTypeName.AdamsExtrapolationThree: return this.AdamsExtrapolationThreeSync;
-                case CalculationTypeName.AdamsExtrapolationThreeAsync: return this.AdamsExtrapolationThreeAsync;
-
-                case CalculationTypeName.AdamsExtrapolationFour: return this.AdamsExtrapolationFourSync;
-                case CalculationTypeName.AdamsExtrapolationFourAsync: return this.AdamsExtrapolationFourAsync;
-
-                case CalculationTypeName.Miln: return this.MilnSync;
-                case CalculationTypeName.MilnAsync: return this.MilnAsync;
-
-                default: throw new ArgumentException($"No methods for this type '{calculationType.ToString()}' were found");
-            }
         }
     }
 }

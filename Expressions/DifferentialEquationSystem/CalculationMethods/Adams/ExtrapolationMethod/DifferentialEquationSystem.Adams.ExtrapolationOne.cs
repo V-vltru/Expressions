@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> AdamsExtrapolationOneSync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<DEVariable> AdamsExtrapolationOneSync(List<List<DEVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
             List<Variable> allVars;
@@ -20,8 +20,8 @@
 
             // Copy this.LeftVariables to the current one and to the nex one
             // To leave this.LeftVariables member unchanged (for further calculations)
-            DifferentialEquationSystem.CopyVariables(this.LeftVariables, currentLeftVariables);
-            DifferentialEquationSystem.CopyVariables(this.LeftVariables, nextLeftVariables);
+            DifferentialEquationSystemHelpers.CopyVariables(this.LeftVariables, currentLeftVariables);
+            DifferentialEquationSystemHelpers.CopyVariables(this.LeftVariables, nextLeftVariables);
 
             // Setting of current time (to leave this.TimeVariable unchanged)
             Variable currentTime = new Variable(this.TimeVariable);
@@ -32,7 +32,7 @@
                 // This is the first record for intermediate calculations containier
                 // It has to be clear
                 variablesAtAllStep.Clear();
-                DifferentialEquationSystem.SaveLeftVariableToStatistics(variablesAtAllStep, this.LeftVariables, currentTime);
+                DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, this.LeftVariables, currentTime);
             }
             #endregion
 
@@ -45,17 +45,17 @@
 
             // Calculation
             List<Variable> firstLeftVariables;
-            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<InitVariable> bufer);
-            firstLeftVariables = DifferentialEquationSystem.ConvertInitVariablesToVariables(bufer);
+            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<DEVariable> bufer);
+            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertDEVariablesToVariables(bufer);
 
             // Save the second variables calculated with Euler method
             if (variablesAtAllStep != null)
             {
-                DifferentialEquationSystem.SaveLeftVariableToStatistics(variablesAtAllStep, firstLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
+                DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, firstLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
             }
             #endregion
 
-            allVars = DifferentialEquationSystem.CollectVariables(currentLeftVariables, this.Constants, currentTime);
+            allVars = DifferentialEquationSystemHelpers.CollectVariables(currentLeftVariables, this.Constants, currentTime);
 
             double[,] Q = new double[2, this.ExpressionSystem.Count];
             for (int i = 0; i < this.ExpressionSystem.Count; i++)
@@ -64,7 +64,7 @@
             }
 
             currentTime.Value += this.Tau;
-            allVars = DifferentialEquationSystem.CollectVariables(firstLeftVariables, this.Constants, currentTime);
+            allVars = DifferentialEquationSystemHelpers.CollectVariables(firstLeftVariables, this.Constants, currentTime);
 
             for (int i = 0; i < this.ExpressionSystem.Count; i++)
             {
@@ -78,7 +78,7 @@
                     nextLeftVariables[i].Value = currentLeftVariables[i].Value + 0.5 * (3 * Q[1, i] - Q[0, i]);
                 }
 
-                allVars = DifferentialEquationSystem.CollectVariables(nextLeftVariables, this.Constants, new Variable(currentTime.Name, currentTime.Value + this.Tau));
+                allVars = DifferentialEquationSystemHelpers.CollectVariables(nextLeftVariables, this.Constants, new Variable(currentTime.Name, currentTime.Value + this.Tau));
 
                 for (int i = 0; i < nextLeftVariables.Count; i++)
                 {
@@ -88,17 +88,17 @@
 
                 if (variablesAtAllStep != null)
                 {
-                    DifferentialEquationSystem.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
+                    DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
                 }
 
-                DifferentialEquationSystem.CopyVariables(nextLeftVariables, currentLeftVariables);
+                DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, currentLeftVariables);
 
                 // calculation time incrimentation
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
-            DifferentialEquationSystem.CopyVariables(currentLeftVariables, result);
+            List<DEVariable> result = new List<DEVariable>();
+            DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }
 
@@ -107,7 +107,7 @@
         /// </summary>
         /// <param name="variablesAtAllStep">Container where the intermediate parameters are supposed to be saved</param>
         /// <returns>List of result variables</returns>
-        private List<InitVariable> AdamsExtrapolationOneAsync(List<List<InitVariable>> variablesAtAllStep = null)
+        private List<DEVariable> AdamsExtrapolationOneAsync(List<List<DEVariable>> variablesAtAllStep = null)
         {
             #region Calculation preparation
             List<Variable> allVars;
@@ -116,8 +116,8 @@
 
             // Copy this.LeftVariables to the current one and to the nex one
             // To leave this.LeftVariables member unchanged (for further calculations)
-            DifferentialEquationSystem.CopyVariables(this.LeftVariables, currentLeftVariables);
-            DifferentialEquationSystem.CopyVariables(this.LeftVariables, nextLeftVariables);
+            DifferentialEquationSystemHelpers.CopyVariables(this.LeftVariables, currentLeftVariables);
+            DifferentialEquationSystemHelpers.CopyVariables(this.LeftVariables, nextLeftVariables);
 
             // Setting of current time (to leave this.TimeVariable unchanged)
             Variable currentTime = new Variable(this.TimeVariable);
@@ -128,7 +128,7 @@
                 // This is the first record for intermediate calculations containier
                 // It has to be clear
                 variablesAtAllStep.Clear();
-                DifferentialEquationSystem.SaveLeftVariableToStatistics(variablesAtAllStep, this.LeftVariables, currentTime);
+                DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, this.LeftVariables, currentTime);
             }
             #endregion
 
@@ -141,17 +141,17 @@
 
             // Calculation
             List<Variable> firstLeftVariables;
-            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<InitVariable> bufer);
-            firstLeftVariables = DifferentialEquationSystem.ConvertInitVariablesToVariables(bufer);
+            differentialEquationSystem.Calculate(CalculationTypeName.Euler, out List<DEVariable> bufer);
+            firstLeftVariables = DifferentialEquationSystemHelpers.ConvertDEVariablesToVariables(bufer);
 
             // Save the second variables calculated with Euler method
             if (variablesAtAllStep != null)
             {
-                DifferentialEquationSystem.SaveLeftVariableToStatistics(variablesAtAllStep, firstLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
+                DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, firstLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
             }
             #endregion
 
-            allVars = DifferentialEquationSystem.CollectVariables(currentLeftVariables, this.Constants, currentTime);
+            allVars = DifferentialEquationSystemHelpers.CollectVariables(currentLeftVariables, this.Constants, currentTime);
 
             double[,] Q = new double[2, this.ExpressionSystem.Count];
             Parallel.For(0, this.ExpressionSystem.Count, (i) => 
@@ -160,7 +160,7 @@
             });
 
             currentTime.Value += this.Tau;
-            allVars = DifferentialEquationSystem.CollectVariables(firstLeftVariables, this.Constants, currentTime);
+            allVars = DifferentialEquationSystemHelpers.CollectVariables(firstLeftVariables, this.Constants, currentTime);
 
             Parallel.For(0, this.ExpressionSystem.Count, (i) => 
             {
@@ -174,7 +174,7 @@
                     nextLeftVariables[i].Value = currentLeftVariables[i].Value + 0.5 * (3 * Q[1, i] - Q[0, i]);
                 });
 
-                allVars = DifferentialEquationSystem.CollectVariables(nextLeftVariables, this.Constants, new Variable(currentTime.Name, currentTime.Value + this.Tau));
+                allVars = DifferentialEquationSystemHelpers.CollectVariables(nextLeftVariables, this.Constants, new Variable(currentTime.Name, currentTime.Value + this.Tau));
 
                 Parallel.For(0, nextLeftVariables.Count, (i) => 
                 {
@@ -184,17 +184,17 @@
 
                 if (variablesAtAllStep != null)
                 {
-                    DifferentialEquationSystem.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
+                    DifferentialEquationSystemHelpers.SaveLeftVariableToStatistics(variablesAtAllStep, nextLeftVariables, new Variable(currentTime.Name, currentTime.Value + this.Tau));
                 }
 
-                DifferentialEquationSystem.CopyVariables(nextLeftVariables, currentLeftVariables);
+                DifferentialEquationSystemHelpers.CopyVariables(nextLeftVariables, currentLeftVariables);
 
                 // calculation time incrimentation
                 currentTime.Value += this.Tau;
             } while (currentTime.Value < this.TEnd);
 
-            List<InitVariable> result = new List<InitVariable>();
-            DifferentialEquationSystem.CopyVariables(currentLeftVariables, result);
+            List<DEVariable> result = new List<DEVariable>();
+            DifferentialEquationSystemHelpers.CopyVariables(currentLeftVariables, result);
             return result;
         }
     }
