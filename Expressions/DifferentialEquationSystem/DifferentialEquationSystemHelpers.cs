@@ -141,17 +141,25 @@
         /// <param name="statistics">Container where left variables for each time are saved</param>
         /// <param name="leftVariables">Current left variables</param>
         /// <param name="currentTime">Current time</param>
-        public static void SaveLeftVariableToStatistics(List<List<DEVariable>> statistics, List<Variable> leftVariables, Variable currentTime)
+        public static void SaveLeftVariableToStatistics(List<Dictionary<string, double>> statistics, 
+            Dictionary<string, double> leftVariables, KeyValuePair<string, double> currentTime)
         {
             if (statistics != null)
             {
                 // Copying of the initial left variables to the separate list which when is going to "variablesAtAllStep" containier
-                List<DEVariable> initLeftVariables = new List<DEVariable>();
-                CopyVariables(leftVariables, initLeftVariables);
+                //List<DEVariable> initLeftVariables = new List<DEVariable>();
+                //CopyVariables(leftVariables, initLeftVariables);
+
+                Dictionary<string, double> leftVariablesResult = new Dictionary<string, double>();
+                foreach (KeyValuePair<string, double> leftVariable in leftVariables)
+                {
+                    leftVariablesResult.Add(leftVariable.Key, leftVariable.Value);
+                }
+
+                leftVariablesResult.Add(currentTime.Key, currentTime.Value);
 
                 // Current time is also required to be saved in the intermediate vlues
-                initLeftVariables.Add(new DEVariable(currentTime));
-                statistics.Add(initLeftVariables);
+                statistics.Add(leftVariablesResult);
             }
         }
 
@@ -162,19 +170,24 @@
         /// <param name="constants">Constants</param>
         /// <param name="time">Time parameters</param>
         /// <returns>Container which contains left variables, constants and time parameter</returns>
-        public static List<Variable> CollectVariables(List<Variable> leftVariables, List<Variable> constants, Variable time)
+        public static Dictionary<string, double> CollectVariables(Dictionary<string, double> leftVariables, Dictionary<string, double> constants, KeyValuePair<string, double> time)
         {
-            List<Variable> allVars = new List<Variable>();
-            allVars.AddRange(leftVariables);
+            Dictionary<string, double> allVars = new Dictionary<string, double>();
+            
+            foreach (KeyValuePair<string, double> leftVariable in leftVariables)
+            {
+                allVars.Add(leftVariable.Key, leftVariable.Value);
+            }
+
             if (constants != null)
             {
-                if (constants.Count > 0)
+                foreach (KeyValuePair<string, double> constant in constants)
                 {
-                    allVars.AddRange(constants);
+                    allVars.Add(constant.Key, constant.Value);
                 }
             }
 
-            allVars.Add(time);
+            allVars.Add(time.Key, time.Value);
             return allVars;
         }
     }

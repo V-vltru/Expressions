@@ -52,7 +52,6 @@
     <Compile Include="CalculationTypeNames.cs" />
     <Compile Include="DifferentialEquationSystem.cs" />
     <Compile Include="DifferentialEquationSystemHelpers.cs" />
-    <Compile Include="InitVariable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reporting\Reporting.SetInitialSheet.cs" />
     <Compile Include="Reporting\Reporting.cs" />
