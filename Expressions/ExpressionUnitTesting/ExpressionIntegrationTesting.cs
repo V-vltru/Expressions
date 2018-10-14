@@ -16,11 +16,11 @@
         public void IntegrationTest1()
         {
             string expression = "(a + b) * c";
-            List<Variable> vars = new List<Variable>
+            Dictionary<string, double> vars = new Dictionary<string, double>
             {
-                new Variable("a", 1),
-                new Variable("b", 3),
-                new Variable("c", 2)
+                { "a", 1 },
+                { "b", 3 },
+                { "c", 2 }
             };
 
             double result = 8;
@@ -45,14 +45,16 @@
             {
                 string id = test.Attributes["id"].Value;
 
-                List<Variable> vars = new List<Variable>();
+                //List<Variable> vars = new List<Variable>();
+                var vars = new Dictionary<string, double>();
+
                 XmlNodeList varsList = test.SelectNodes("Parameters/Parameter");
 
                 foreach (XmlNode var in varsList)
                 {
                     //double.TryParse(var.Attributes["Value"].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double value);
-                    vars.Add(new Variable(var.Attributes["Name"].Value,
-                        Convert.ToDouble(var.Attributes["Value"].Value, CultureInfo.CurrentCulture.NumberFormat)));
+                    vars.Add(var.Attributes["Name"].Value,
+                        Convert.ToDouble(var.Attributes["Value"].Value, CultureInfo.CurrentCulture.NumberFormat));
                 }
 
                 string expression = test.SelectSingleNode("Value").InnerText;

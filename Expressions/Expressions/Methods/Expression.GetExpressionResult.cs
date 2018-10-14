@@ -12,7 +12,7 @@
         /// <param name="parent">Parent leave of the expression</param>
         /// <param name="variables">List of variables</param>
         /// <returns>The result of the expression</returns>
-        public double GetExpressionResult(Tree parent, List<Variable> variables)
+        public double GetExpressionResult(Tree parent, Dictionary<string, double> variables)
         {
             double leftOp = 0;
             double rightOp = 0;
@@ -39,7 +39,7 @@
             }
             else if (parent.DataType == EssenceType.Variable)
             {
-                result = Variable.GetVariableValue(parent.Data, variables);
+                result = variables[parent.Data];
             }
             else
             {

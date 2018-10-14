@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using Expressions.Models;
 
     public static class ExpressionParsingHelpers
     {
@@ -183,6 +184,22 @@
             }
 
             return result;
+        }
+
+        public static EssenceType NumberOrVariable(Dictionary<string, double> variables, string expression)
+        {
+            if (double.TryParse(expression, out double bufOut))
+            {
+                return EssenceType.Number;
+            }
+            else if (variables.ContainsKey(expression))
+            {
+                return EssenceType.Variable;
+            }
+            else
+            {
+                return EssenceType.Nothing;
+            }
         }
     }
 }

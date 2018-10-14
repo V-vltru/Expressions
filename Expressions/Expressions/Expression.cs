@@ -22,11 +22,11 @@
         public List<StandardFunction> StandardFunctions { get; set; }
 
         /// <summary>
-        /// List of variables in the expression
+        /// Dictionary of variables in the expression
         /// </summary>
-        public List<Variable> Variables { get; set; }
+        public Dictionary<string, double> Variables { get; set; }        
 
-        public double GetResultValue(List<Variable> variables)
+        public double GetResultValue(Dictionary<string, double> variables)
         {
             return this.GetExpressionResult(this.parent, variables);
         }
@@ -36,7 +36,7 @@
         /// </summary>
         /// <param name="expression">Initial expression</param>
         /// <param name="variables"></param>
-        public Expression(string expression, List<Variable> variables)
+        public Expression(string expression, Dictionary<string, double> variables)
         {
             if (ExpressionParsingHelpers.CheckBracketBalance(expression))
             {
@@ -60,7 +60,7 @@
         /// Constructor validates the input expression and defines the expression tree
         /// </summary>
         /// <param name="expression">Initial expression</param>
-        public Expression(string expression): this(expression, new List<Variable>())
+        public Expression(string expression): this(expression, new Dictionary<string, double>())
         {}
 
         public Expression() { }

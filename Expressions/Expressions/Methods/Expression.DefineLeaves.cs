@@ -33,7 +33,7 @@
                             List<Interval> intervals = this.GetIntervals(expression);
                             funcs = this.GetStandardFunctions(expression, intervals);
 
-                            if (funcs.Count == 0 && Variable.IsNumberOrVariable(expression, this.Variables) == EssenceType.Nothing)
+                            if (funcs.Count == 0 && ExpressionParsingHelpers.NumberOrVariable(this.Variables, expression) == EssenceType.Nothing)
                             {
                                 throw new Exception("No operators, no functions, no variables were found in string: " + expression);
                             }
@@ -52,9 +52,9 @@
             {
                 type = EssenceType.StandardFunction;
             }
-            else if (Variable.IsNumberOrVariable(expression, this.Variables) != EssenceType.Nothing)
+            else if (ExpressionParsingHelpers.NumberOrVariable(this.Variables, expression) != EssenceType.Nothing)
             {
-                type = Variable.IsNumberOrVariable(expression, this.Variables);
+                type = ExpressionParsingHelpers.NumberOrVariable(this.Variables, expression);
             }
             else
             {
