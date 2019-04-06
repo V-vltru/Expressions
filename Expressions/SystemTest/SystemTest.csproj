@@ -53,6 +53,10 @@
       <Project>{6b2422a0-8bcf-4fe6-96ff-2df53c3e500e}</Project>
       <Name>DifferentialEquationSystem</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Integral\Integral.csproj">
+      <Project>{f6206a6f-cef6-498d-a455-a66d56fc01b4}</Project>
+      <Name>Integral</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
