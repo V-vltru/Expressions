@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BFF7FE33-9F47-4630-A85D-64AD0FD4C1AF}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>SystemTest</RootNamespace>
-    <AssemblyName>SystemTest</AssemblyName>
+    <ProjectGuid>{F6206A6F-CEF6-498D-A455-A66D56FC01B4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Integral</RootNamespace>
+    <AssemblyName>Integral</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,20 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="CalculationMethods.cs" />
+    <Compile Include="CalculationType.cs" />
+    <Compile Include="Integral.cs" />
+    <Compile Include="IntegralVariable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DifferentialEquationSystem\DifferentialEquationSystem.csproj">
-      <Project>{6b2422a0-8bcf-4fe6-96ff-2df53c3e500e}</Project>
-      <Name>DifferentialEquationSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Integral\Integral.csproj">
-      <Project>{f6206a6f-cef6-498d-a455-a66d56fc01b4}</Project>
-      <Name>Integral</Name>
+    <ProjectReference Include="..\Expressions\Expressions.csproj">
+      <Project>{800cc30d-a6a7-4e53-b6d0-db6a15f17e59}</Project>
+      <Name>Expressions</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

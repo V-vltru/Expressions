@@ -31,6 +31,11 @@
             return this.GetExpressionResult(this.parent, variables);
         }
 
+        public double GetResultValue(Variable variable)
+        {
+            return this.GetExpressionResult(this.parent, new List<Variable> { variable });
+        }
+
         /// <summary>
         /// Constructor validates the input expression and defines the expression tree
         /// </summary>

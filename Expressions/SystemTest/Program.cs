@@ -4,12 +4,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DifferentialEquationSystem;
+using Integral;
 
 namespace SystemTest
 {
     class Program
     {
         static void Main(string[] args)
+        {
+            VerifyIntegrals();
+        }
+
+        static void VerifyIntegrals()
+        {
+            string integrand = "x*x";
+            double startValue = -1;
+            double endValue = 1;
+            int iterationsNumber = 1000;
+            string parameterName = "x";
+
+            Integral.Integral integral = new Integral.Integral(integrand, startValue, endValue, iterationsNumber, parameterName);
+
+            double resultLeftRectangle = integral.Calculate(CalculationType.LeftRectangle);
+            double resultRightRectangle = integral.Calculate(CalculationType.RightRectangle);
+            double resultAverageRectangle = integral.Calculate(CalculationType.AverageRectangle);
+            double resultTrapezium = integral.Calculate(CalculationType.Trapezium);
+            double resultSimpson = integral.Calculate(CalculationType.Simpson);
+
+            Console.WriteLine($"Left rectangle: {resultLeftRectangle}");
+            Console.WriteLine($"Right rectangle: {resultRightRectangle}");
+            Console.WriteLine($"Average rectangle: {resultAverageRectangle}");
+            Console.WriteLine($"Trapezium: {resultTrapezium}");
+            Console.WriteLine($"Simpson: {resultSimpson}");
+
+            Console.ReadKey();
+        }
+
+        static void VerifyDifferentialEquations()
         {
             List<string> expressions = new List<string>
             {
