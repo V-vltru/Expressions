@@ -15,7 +15,7 @@
             
             for (int i = 0; i < numberOfSteps; i++)
             {
-                result += integrand.GetResultValue(currentVariable);
+                result += calculationStep * integrand.GetResultValue(currentVariable);
                 currentVariable.Value += calculationStep;
             }
 
@@ -33,7 +33,7 @@
 
             for (int i = 0; i < numberOfSteps; i++)
             {
-                result += integrand.GetResultValue(currentVariable);
+                result += calculationStep * integrand.GetResultValue(currentVariable);
                 currentVariable.Value += calculationStep;
             }
 
@@ -47,10 +47,10 @@
 
             Variable currentVariable = new Variable(variableName, startValue);
 
-            for (int i = 0; i <= numberOfSteps; i++)
+            for (int i = 0; i < numberOfSteps; i++)
             {
                 currentVariable.Value += calculationStep / 2.0;
-                result += integrand.GetResultValue(currentVariable);
+                result += calculationStep * integrand.GetResultValue(currentVariable);
 
                 currentVariable.Value += calculationStep / 2.0;
             }
@@ -63,10 +63,10 @@
             double result = 0.0;
             double calculationStep = GetStep(startValue, endValue, numberOfSteps);
 
-            Variable currentVariable = new Variable(variableName, startValue);
+            Variable currentVariable = new Variable(variableName, startValue + calculationStep);
             Variable prevVariable = new Variable(variableName, startValue);
 
-            for (int i = 1; i < numberOfSteps; i++)
+            for (int i = 0; i < numberOfSteps; i++)
             {
                 result += (integrand.GetResultValue(currentVariable) + integrand.GetResultValue(prevVariable)) / 2 * calculationStep;
 
