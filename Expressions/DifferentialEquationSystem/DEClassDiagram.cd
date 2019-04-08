@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DifferentialEquationSystem.DEVariable">
+    <Position X="3" Y="5.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAQAAAAAAAAAAAAgAAAAAAI=</HashCode>
+      <FileName>InitVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DifferentialEquationSystem.DifferentialEquationSystemHelpers">
+    <Position X="3" Y="1" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAoACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQA=</HashCode>
+      <FileName>DifferentialEquationSystemHelpers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DifferentialEquationSystem.DifferentialEquationSystem">
+    <Position X="6" Y="1" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AEgAoQAAAAAgIBEBAgAAAAAAEDEAANmAQEAkEgAAQAA=</HashCode>
+      <FileName>CalculationMethods\Adams\ExtrapolationMethod\DifferentialEquationSystem.Adams.ExtrapolationFour.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TimeVariable" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="LeftVariables" />
+      <Property Name="Constants" />
+      <Property Name="ExpressionSystem" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="DifferentialEquationSystem.Reporting">
+    <Position X="3" Y="3.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAABAAAQAAAAAAAAAAAAAAAAAAAAAAABAgAAAAA=</HashCode>
+      <FileName>Reporting\Reporting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Expressions.Models.Variable">
+    <Position X="10.75" Y="4.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Expressions.Expression">
+    <Position X="10.75" Y="1" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Enum Name="DifferentialEquationSystem.CalculationTypeName">
+    <Position X="13.25" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BEAAASAAAAAAIAEBAAAAAAggAgAAAIEAABAEIAAAAAA=</HashCode>
+      <FileName>CalculationTypeNames.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -12,7 +12,7 @@
         /// <param name="worksheet">Worksheet where the information will be saved</param>
         /// <param name="calculationTimes">Time results for each calculation types</param>
         /// <param name="results">results for each calculation types</param>
-        public static void SetCommonResults(Excel.Worksheet worksheet, Dictionary<CalculationTypeName, double> calculationTimes, 
+        private static void SetCommonResults(Excel.Worksheet worksheet, Dictionary<CalculationTypeName, double> calculationTimes, 
             Dictionary<CalculationTypeName, List<DEVariable>> results)
         {
             worksheet.Name = "Common results";

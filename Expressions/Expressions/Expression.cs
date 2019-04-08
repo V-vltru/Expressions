@@ -14,7 +14,7 @@
         /// <summary>
         /// Expression as string to parse
         /// </summary>
-        private string expr;
+        public string ExpressionString { get; }
 
         /// <summary>
         /// 
@@ -52,8 +52,8 @@
                 expression = ExpressionParsingHelpers.DeleteEmptyBrackets(expression);
                 expression = ExpressionParsingHelpers.AddMinusOne(expression);
 
-                this.expr = expression;
-                this.DefineLeaves(parent, this.expr);
+                this.ExpressionString = expression;
+                this.DefineLeaves(parent, this.ExpressionString);
             }
             else
             {
