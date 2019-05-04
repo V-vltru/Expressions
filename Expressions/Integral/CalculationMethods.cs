@@ -6,6 +6,8 @@
 
     public partial class Integral
     {
+        #region Calculation methods
+
         public double CalculateRectangleLeft(Expression integrand, double startValue, double endValue, int numberOfSteps, string variableName)
         {
             double result = 0.0;
@@ -99,6 +101,10 @@
             return result;
         }
 
+        #endregion
+
+        #region Helpers
+
         private double GetStep(double startValue, double endValue, int iterationNumber)
         {
             if (startValue > endValue)
@@ -113,5 +119,7 @@
 
             return (endValue - startValue) / iterationNumber;
         }
+
+        #endregion
     }
 }
