@@ -26,7 +26,7 @@
             for (int i = 0; i < expressions.Count; i++)
             {
                 xlWorkSheet.Cells[rowIndex, columnIndex] = $"{leftVariables[i].Name}' = ";
-                xlWorkSheet.Cells[rowIndex, columnIndex + 1] = expressions[i];
+                xlWorkSheet.Cells[rowIndex, columnIndex + 1] = expressions[i].ExpressionString;
 
                 rowIndex++;
             }

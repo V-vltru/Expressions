@@ -53,5 +53,8 @@
       <Name>Expressions</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="IntegralClassDiagram.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

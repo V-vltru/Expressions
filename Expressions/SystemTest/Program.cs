@@ -12,7 +12,8 @@ namespace SystemTest
     {
         static void Main(string[] args)
         {
-            VerifyIntegrals();
+            // VerifyIntegrals();
+            VerifyDifferentialEquations();
         }
 
         static void VerifyIntegrals()

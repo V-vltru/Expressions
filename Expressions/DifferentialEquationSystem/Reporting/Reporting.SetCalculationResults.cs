@@ -15,7 +15,7 @@
         /// <param name="result">Container with result variables</param>
         /// <param name="allVariables">Cantainer with variables values for each time step</param>
         /// <param name="calcTime">Time reqiured for calculation</param>
-        public static void SetCalculationResults(Excel.Worksheet worksheet, CalculationTypeName calculationTypeName, 
+        private static void SetCalculationResults(Excel.Worksheet worksheet, CalculationTypeName calculationTypeName, 
             List<Variable> leftVariables, List<DEVariable> result, List<List<DEVariable>> allVariables, double calcTime)
         {
             worksheet.Name = calculationTypeName.ToString();

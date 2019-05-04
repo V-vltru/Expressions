@@ -108,7 +108,7 @@
         /// Sets the initial parameters of the DifferentialEquationSystem class.
         /// </summary>
         /// <param name="differentialEquationSystem">Input instance</param>
-        private DifferentialEquationSystem(DifferentialEquationSystem differentialEquationSystem):
+        public DifferentialEquationSystem(DifferentialEquationSystem differentialEquationSystem):
             this(differentialEquationSystem.ExpressionSystem, differentialEquationSystem.LeftVariables, differentialEquationSystem.Constants,
                 differentialEquationSystem.TimeVariable, differentialEquationSystem.TEnd, differentialEquationSystem.Tau)
         {
