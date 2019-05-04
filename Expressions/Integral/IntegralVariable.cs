@@ -26,7 +26,7 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DEVariable" /> class.
+        /// Initializes a new instance of the <see cref="IntegralVariable" /> class.
         /// </summary>
         public IntegralVariable()
         {
