@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integral", "Integral\Integr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{96291AA8-1FC9-4E41-9660-05FDEF35E996}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinearAlgebraicEquationsSystem", "LinearAlgebraicEquationsSystem\LinearAlgebraicEquationsSystem.csproj", "{A606D610-190A-4F5F-A649-B17958C95CB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{96291AA8-1FC9-4E41-9660-05FDEF35E996}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96291AA8-1FC9-4E41-9660-05FDEF35E996}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96291AA8-1FC9-4E41-9660-05FDEF35E996}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A606D610-190A-4F5F-A649-B17958C95CB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A606D610-190A-4F5F-A649-B17958C95CB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A606D610-190A-4F5F-A649-B17958C95CB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A606D610-190A-4F5F-A649-B17958C95CB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
