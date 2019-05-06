@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="LAEVariable.cs" />
     <Compile Include="LinearAlgebraicEquationSystem.cs" />
+    <Compile Include="MatrixT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

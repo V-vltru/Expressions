@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DifferentialEquationSystem;
+using LinearAlgebraicEquationsSystem;
 using Integral;
 
 namespace SystemTest
@@ -13,7 +14,34 @@ namespace SystemTest
         static void Main(string[] args)
         {
             // VerifyIntegrals();
-            VerifyDifferentialEquations();
+            //VerifyDifferentialEquations();
+
+            MatrixT<int> mat = new MatrixT<int>(new int[3, 4] { { 2, -1, 1, 1 }, { 1, 2, -1, 1 }, { 1, 7, -4, 2 } });
+            double det = MatrixT<int>.GetRank(mat);
+
+            Console.WriteLine(det);
+
+            MatrixT<int> mat2 = new MatrixT<int>(new int[3, 5] { { 2, -1, 1, 1, 1 }, { 1, 2, -1, 1, 2 }, { 1, 7, -4, 2, 5 } });
+            double det2 = MatrixT<int>.GetRank(mat2);
+
+            Console.WriteLine(det2);
+
+            MatrixT<double> mat3 = new MatrixT<double>(new double[2, 2] { { 5, 2 }, { 2, 1 } });
+            MatrixT<double> reversed = MatrixT<double>.GetInverseMatrix(mat3);
+
+            MatrixT<double> result = reversed * mat3;
+
+            for (int i = 0; i < reversed.Rows; i++)
+            {
+                for (int j = 0; j < reversed.Cols; j++)
+                {
+                    Console.Write(reversed[i, j] + " ");
+                }
+
+                Console.WriteLine();
+            }
+
+            Console.ReadKey();
         }
 
         static void VerifyIntegrals()

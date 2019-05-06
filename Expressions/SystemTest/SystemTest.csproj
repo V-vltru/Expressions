@@ -57,6 +57,10 @@
       <Project>{f6206a6f-cef6-498d-a455-a66d56fc01b4}</Project>
       <Name>Integral</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LinearAlgebraicEquationsSystem\LinearAlgebraicEquationsSystem.csproj">
+      <Project>{a606d610-190a-4f5f-a649-b17958c95cb7}</Project>
+      <Name>LinearAlgebraicEquationsSystem</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
