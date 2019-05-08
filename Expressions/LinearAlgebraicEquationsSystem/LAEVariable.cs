@@ -48,6 +48,30 @@ namespace LinearAlgebraicEquationsSystem
         /// </summary>
         public double Value { get; set; }
 
+        public static List<Variable> ConvertLAEVariablesToVariables(List<LAEVariable> lAEVariables)
+        {
+            List<Variable> result = new List<Variable>();
+
+            foreach (LAEVariable lAEVariable in lAEVariables)
+            {
+                result.Add(new Variable(lAEVariable.Name, lAEVariable.Value));
+            }
+
+            return result;
+        }
+
+        public static List<LAEVariable> ConvertVariablesToLAEVariables(List<Variable> variables)
+        {
+            List<LAEVariable> result = new List<LAEVariable>();
+
+            foreach (Variable variable in variables)
+            {
+                result.Add(new LAEVariable(variable.Name, variable.Value));
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Method implicitly converts InitVariable instance to the Variable one
         /// </summary>

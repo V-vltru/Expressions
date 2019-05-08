@@ -17,29 +17,54 @@ namespace SystemTest
             //VerifyDifferentialEquations();
 
             MatrixT<int> mat = new MatrixT<int>(new int[3, 4] { { 2, -1, 1, 1 }, { 1, 2, -1, 1 }, { 1, 7, -4, 2 } });
-            double det = MatrixT<int>.GetRank(mat);
+            double det = MatrixT<int>.GetRang(mat);
 
             Console.WriteLine(det);
 
             MatrixT<int> mat2 = new MatrixT<int>(new int[3, 5] { { 2, -1, 1, 1, 1 }, { 1, 2, -1, 1, 2 }, { 1, 7, -4, 2, 5 } });
-            double det2 = MatrixT<int>.GetRank(mat2);
+            double det2 = MatrixT<int>.GetRang(mat2);
 
             Console.WriteLine(det2);
 
-            MatrixT<double> mat3 = new MatrixT<double>(new double[2, 2] { { 5, 2 }, { 2, 1 } });
+            MatrixT<double> mat3 = new MatrixT<double>(new double[3, 3] { { 2, 1, 1 }, { 1, -1, 0 }, { 3, -1, 2} });
             MatrixT<double> reversed = MatrixT<double>.GetInverseMatrix(mat3);
 
             MatrixT<double> result = reversed * mat3;
 
             for (int i = 0; i < reversed.Rows; i++)
             {
-                for (int j = 0; j < reversed.Cols; j++)
+                for (int j = 0; j < reversed.Columns; j++)
                 {
                     Console.Write(reversed[i, j] + " ");
                 }
 
                 Console.WriteLine();
             }
+
+            MatrixT<double> c = 2 * mat3;
+
+            List<string> leftParts = new List<string>
+            {
+                "2 * x1 + x2 + x3",
+                "x1 - x2",
+                "3 * x1 - x2 + 2 * x3"
+            };
+
+            List<LAEVariable> lAEVariables = new List<LAEVariable>
+            {
+                new LAEVariable("x1", 0),
+                new LAEVariable("x2", 0),
+                new LAEVariable("x3", 0)
+            };
+
+            List<double> rightParts = new List<double>
+            {
+                2, -2, 2
+            };
+
+            LinearAlgebraicEquationSystem linearAlgebraicEquationSystem = new LinearAlgebraicEquationSystem(leftParts, rightParts, lAEVariables, null);
+
+            List<LAEVariable> res = linearAlgebraicEquationSystem.CalculateMatrixMethod();
 
             Console.ReadKey();
         }

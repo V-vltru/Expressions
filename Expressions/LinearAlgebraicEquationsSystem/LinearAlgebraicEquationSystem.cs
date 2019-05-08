@@ -8,7 +8,7 @@ using Expressions.Models;
 
 namespace LinearAlgebraicEquationsSystem
 {
-    public class LinearAlgebraicEquationSystem
+    public partial class LinearAlgebraicEquationSystem
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearAlgebraicEquationSystem" /> class.
@@ -33,7 +33,7 @@ namespace LinearAlgebraicEquationsSystem
 
             if (variables != null && variables.Count > 0)
             {
-                this.Variables = variables.Cast<Variable>().ToList();
+                this.Variables = LAEVariable.ConvertLAEVariablesToVariables(variables);
                 allVariables.AddRange(this.Variables);
             }
             else
@@ -43,7 +43,7 @@ namespace LinearAlgebraicEquationsSystem
 
             if (constants != null && constants.Count > 0)
             {
-                this.Constants = constants.Cast<Variable>().ToList();
+                this.Constants = LAEVariable.ConvertLAEVariablesToVariables(constants);
                 allVariables.AddRange(this.Constants);
             }
            
@@ -108,10 +108,10 @@ namespace LinearAlgebraicEquationsSystem
 
         public bool CheckLinearAlgebraicEquationSystemCompatibility()
         {
-            int matrixRank = MatrixT<double>.GetRank(this.Matrix);
+            int matrixRank = MatrixT<double>.GetRang(this.Matrix);
 
             MatrixT<double> extendedMatrix = MatrixT<double>.ExtendMatrix(this.Matrix, this.RightPartEquations.ToArray());
-            int extendedMatrixRank = MatrixT<double>.GetRank(extendedMatrix);
+            int extendedMatrixRank = MatrixT<double>.GetRang(extendedMatrix);
 
             if (matrixRank == extendedMatrixRank)
             {
