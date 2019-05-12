@@ -126,5 +126,54 @@ namespace Expressions.Models
                 default: throw new Exception(errorMessage.Replace("%p%", operatorName.ToString()));
             }
         }
+
+        /// <summary>
+        /// Method returns the value of the binary operator
+        /// </summary>
+        /// <param name="leftOp">Left operand</param>
+        /// <param name="rightOp">Right operand</param>
+        /// <param name="operator">Name of the operator</param>
+        /// <returns>The result of operator</returns>
+        public static double GetValue(double leftOp, double rightOp, Operator @operator)
+        {
+            return Operator.GetValue(leftOp, rightOp, @operator.OperatorName);
+        }
+
+        /// <summary>
+        /// Method is used to split the expression by operators.
+        /// </summary>
+        /// <param name="operators">List of operators.</param>
+        /// <param name="expression">Initial expression.</param>
+        /// <returns>The list of split sub-expressions.</returns>
+        public static List<string> SplitExpressionByOperators(List<Operator> operators, string expression)
+        {
+            if (operators != null && operators.Count > 0)
+            {
+                List<string> result = new List<string>();
+
+                StringBuilder currentExpression = new StringBuilder();
+
+                int currentIndex = 0;
+
+                foreach (Operator op in operators)
+                {
+                    currentExpression.Clear();
+
+                    for (int i = currentIndex; i < op.Idx; i++)
+                    {
+                        currentExpression.Append(expression[i]);
+                    }
+
+                    result.Add(currentExpression.ToString());
+                    currentIndex = op.Idx + 1;
+                }
+
+                result.Add(expression.Substring(currentIndex));
+
+                return result;
+            }
+
+            return null;
+        }
     }
 }
