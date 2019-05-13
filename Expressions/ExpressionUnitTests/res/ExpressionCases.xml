@@ -5,7 +5,7 @@
     <Parameters>
       <Parameter Name ="a" Value ="1.2" />
       <Parameter Name ="b" Value ="3" />
-      <Parameter Name ="c" Value ="2,1" />
+      <Parameter Name ="c" Value ="2.1" />
     </Parameters>
     <Result>8.82</Result>
   </Expression>
@@ -41,6 +41,24 @@
     <Parameters>
       <Parameter Name ="a" Value ="1" />
     </Parameters>
-    <Result>0,84</Result>
+    <Result>0.84</Result>
+  </Expression>
+  <Expression id ="4">
+    <Value>a - b + c</Value>
+    <Parameters>
+      <Parameter Name ="a" Value ="0" />
+      <Parameter Name ="b" Value ="0" />
+      <Parameter Name ="c" Value ="1" />
+    </Parameters>
+    <Result>1</Result>
+  </Expression>
+  <Expression id ="4">
+    <Value>3 * a - 2 * b + 5 * c</Value>
+    <Parameters>
+      <Parameter Name ="a" Value ="0" />
+      <Parameter Name ="b" Value ="0" />
+      <Parameter Name ="c" Value ="1" />
+    </Parameters>
+    <Result>5</Result>
   </Expression>
 </Expressions> 
