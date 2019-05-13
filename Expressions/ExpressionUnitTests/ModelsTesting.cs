@@ -158,7 +158,7 @@
 
             List<string> numbers = new List<string>
             {
-                "1", "-1", "1,0002", "10,01", ",00000001"
+                "1", "-1", "1,0002", "10,01"
             };
 
             List<string> nothings = new List<string>

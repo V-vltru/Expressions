@@ -10,6 +10,7 @@
         Number,
         Variable,
         StandardFunction,
-        Operator
+        Operator,
+        Cascade
     }
 }

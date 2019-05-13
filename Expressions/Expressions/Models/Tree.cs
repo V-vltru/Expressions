@@ -1,5 +1,7 @@
 ﻿namespace Expressions.Models
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Main tree contains the expression.
     /// </summary>
@@ -22,6 +24,16 @@
         /// Gets or sets the right subtree
         /// </summary>
         public Tree RightLeave { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tree cascade.
+        /// </summary>
+        public List<Tree> Cascade { get; set; }
+
+        /// <summary>
+        /// Gets or sets the oeprators for cascade units.
+        /// </summary>
+        public List<Operator> CascadeOperators { get; set; }
 
         /// <summary>
         /// Default costructor

@@ -19,6 +19,26 @@
 
             double result = 0;
 
+            if (parent.DataType == EssenceType.Cascade)
+            {
+                List<double> cascadeResults = new List<double>();
+
+                for (int i = 0; i < parent.Cascade.Count; i++)
+                {
+                    double cascadeResult = this.GetExpressionResult(parent.Cascade[i], variables);
+                    cascadeResults.Add(cascadeResult);
+                }
+
+                double totalResult = cascadeResults[0];
+
+                for (int i = 0; i < parent.CascadeOperators.Count; i++)
+                {
+                    totalResult = Operator.GetValue(totalResult, cascadeResults[i + 1], parent.CascadeOperators[i].OperatorName);
+                }
+
+                return totalResult;
+            }
+
             if (parent.DataType != EssenceType.Variable && parent.DataType != EssenceType.Number)
             {
                 if (parent.DataType == EssenceType.Operator)
