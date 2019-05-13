@@ -60,12 +60,6 @@
     <Compile Include="Reporting\Reporting.SetCommonResults.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Expressions\Expressions.csproj">
-      <Project>{800cc30d-a6a7-4e53-b6d0-db6a15f17e59}</Project>
-      <Name>Expressions</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="CalculationMethods\Adams\InterpolationMethods\" />
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +93,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DEClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Expressions\Expressions.csproj">
+      <Project>{e31b3278-ca73-4281-9a69-14296c777b3d}</Project>
+      <Name>Expressions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

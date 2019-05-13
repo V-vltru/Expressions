@@ -54,7 +54,7 @@
       <Name>DifferentialEquationSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\Expressions\Expressions.csproj">
-      <Project>{800cc30d-a6a7-4e53-b6d0-db6a15f17e59}</Project>
+      <Project>{e31b3278-ca73-4281-9a69-14296c777b3d}</Project>
       <Name>Expressions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Integral\Integral.csproj">
