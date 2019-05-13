@@ -44,7 +44,11 @@
 
             EssenceType type;
 
-            if (operators.Count > 0)
+            if (operators.Count > 1)
+            {
+                type = EssenceType.Cascade;
+            }
+            else if (operators.Count > 0)
             {
                 type = EssenceType.Operator;
             }
@@ -69,6 +73,8 @@
                 parent.StringRight = ExpressionParsingHelpers.COPY(expression, operators[0].Idx + 1, expression.Length - 1);
                 parent.LeftOperand = 0;
                 parent.RightOperand = 0;
+                parent.Cascade = null;
+                parent.CascadeOperators = null;
 
                 parent.LeftLeave = new Tree();
                 parent.RightLeave = new Tree();
@@ -84,6 +90,8 @@
                 parent.StringRight = ExpressionParsingHelpers.COPY(expression, funcs[0].Idx + funcs[0].Name.Length, expression.Length - 1);
                 parent.LeftOperand = 0;
                 parent.RightOperand = 0;
+                parent.Cascade = null;
+                parent.CascadeOperators = null;
 
                 parent.LeftLeave = null;
                 parent.RightLeave = new Tree();
@@ -98,9 +106,35 @@
                 parent.StringRight = null;
                 parent.LeftOperand = 0;
                 parent.RightOperand = 0;
+                parent.Cascade = null;
+                parent.CascadeOperators = null;
 
                 parent.LeftLeave = null;
                 parent.RightLeave = null;
+            }
+            else if (type == EssenceType.Cascade)
+            {
+                parent.DataType = type;
+                parent.Data = expression;
+                parent.StringLeft = null;
+                parent.StringRight = null;
+                parent.LeftOperand = 0;
+                parent.RightOperand = 0;
+
+                parent.LeftLeave = null;
+                parent.RightLeave = null;
+
+                List<string> subExpressions = Operator.SplitExpressionByOperators(operators, expression);
+                parent.Cascade = new List<Tree>();
+                parent.CascadeOperators = operators;
+
+                foreach (string subExpression in subExpressions)
+                {
+                    Tree subTree = new Tree();
+
+                    this.DefineLeaves(subTree, subExpression);
+                    parent.Cascade.Add(subTree);
+                }
             }
         }
     }

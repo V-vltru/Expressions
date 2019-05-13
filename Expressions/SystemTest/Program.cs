@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using DifferentialEquationSystem;
 using LinearAlgebraicEquationsSystem;
 using Integral;
+using Expressions.Models;
+using Expressions;
 
 namespace SystemTest
 {
@@ -13,6 +15,7 @@ namespace SystemTest
     {
         static void Main(string[] args)
         {
+            //VerifyExpressions();
             // VerifyIntegrals();
             //VerifyDifferentialEquations();
 
@@ -187,6 +190,24 @@ namespace SystemTest
 
             Reporting.GenerateExcelReport(calculationTypes, calcTimes, results, variablesAtAllSteps, "csharp-Excel.xls", differentialEquationSystem);
             #endregion
+        }
+
+        static void VerifyExpressions()
+        {
+            string expression = "2 * x - 3 * y + 5 * z";
+
+            List<Variable> variables = new List<Variable>
+            {
+                new Variable("x", 0),
+                new Variable("y", 0),
+                new Variable("z", 1)
+            };
+
+            Expression exp = new Expression(expression, variables);
+            double result = exp.GetResultValue(variables);
+
+            Console.WriteLine(result);
+            Console.ReadKey();
         }
     }
 }

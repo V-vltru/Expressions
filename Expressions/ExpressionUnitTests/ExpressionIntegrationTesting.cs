@@ -1,13 +1,12 @@
 ﻿namespace ExpressionUnitTesting
 {
     using System.Collections.Generic;
-    using System.Xml;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Expressions;
     using Expressions.Models;
-    using System.Xml.Linq;
     using System;
     using System.Globalization;
+    using System.Xml;
 
     [TestClass]
     public class ExpressionIntegrationTesting
@@ -31,7 +30,7 @@
         }
 
         [TestMethod]
-        [Ignore]
+        //[Ignore]
         [DeploymentItem("res\\ExpressionCases.xml", "res")]
         public void IntegrationTest()
         {
